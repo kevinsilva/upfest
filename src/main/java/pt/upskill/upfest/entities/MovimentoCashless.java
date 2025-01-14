@@ -22,7 +22,7 @@ public class MovimentoCashless {
     private LocalDateTime data;
 
     @ManyToOne
-    private Conta conta;
+    private ContaCashless contaCashless;
 
 
     public Long getId() {
@@ -57,11 +57,11 @@ public class MovimentoCashless {
         this.data = data;
     }
 
-    public Conta getConta() {
-        return conta;
+    public ContaCashless getContaCashless() {
+        return contaCashless;
     }
 
-    public void setConta(Conta conta) {
-        this.conta = conta;
+    public void setContaCashless(ContaCashless contaCashless) {
+        this.contaCashless = contaCashless;
     }
 }
