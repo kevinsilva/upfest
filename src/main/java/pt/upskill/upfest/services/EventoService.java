@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface EventoService {
 
+    //Evento
     Evento getEvento(Long id);
 
     List<Evento> getAllEventos();

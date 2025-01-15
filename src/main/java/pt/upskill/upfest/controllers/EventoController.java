@@ -14,6 +14,7 @@ public class EventoController {
     @Autowired
     EventoServiceImpl eventoService;
 
+    //Evento
     @GetMapping(value = "/evento/listar")
     public List<Evento> getAllEventos(){
         return eventoService.getAllEventos();
@@ -25,7 +26,7 @@ public class EventoController {
     }
 
     @PostMapping(value = "/evento/{id_evento}/editar")
-    public Evento editarEvento(@PathVariable ("id_evento") Long id, @RequestBody EventoModel info) {
+    public Evento editarEvento(@PathVariable ("id_evento") Long id, @ModelAttribute EventoModel info) {
         return eventoService.editarEvento(id, info);
     }
 }

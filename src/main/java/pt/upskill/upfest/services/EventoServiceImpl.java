@@ -14,6 +14,7 @@ public class EventoServiceImpl implements EventoService {
     @Autowired
     EventoRepository eventoRepository;
 
+    //Evento
     @Override
     public Evento getEvento(Long id) {
         Evento evento = eventoRepository.getById(id);
