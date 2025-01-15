@@ -6,7 +6,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 @SpringBootApplication
 public class UpfestApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(UpfestApplication.class, args);
 
