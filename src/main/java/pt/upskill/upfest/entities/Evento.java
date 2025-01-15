@@ -8,17 +8,17 @@ import jakarta.persistence.Id;
 public class Evento {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long id_evento;
 
     private String designacao;
 
 
-    public Long getId() {
-        return id;
+    public Long getId_evento() {
+        return id_evento;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId_evento(Long id_evento) {
+        this.id_evento = id_evento;
     }
 
     public String getDesignacao() {
