@@ -7,7 +7,8 @@ import pt.upskill.upfest.entities.ContaCashless;
 import java.util.Optional;
 
 public interface ContaCashlessRepository extends JpaRepository<ContaCashless, Long> {
-    Optional<ContaCashless> findByParticipanteId(Long participanteId);
+    Optional<ContaCashless> findByEventoIdAndParticipanteEmail(Long eventoId, String email);
 }
+
 
 
