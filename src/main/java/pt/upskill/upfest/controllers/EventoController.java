@@ -1,11 +1,9 @@
 package pt.upskill.upfest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pt.upskill.upfest.entities.Evento;
-import pt.upskill.upfest.models.NovoEvento;
+import pt.upskill.upfest.models.EventoModel;
 import pt.upskill.upfest.services.EventoServiceImpl;
 
 import java.util.List;
@@ -17,14 +15,17 @@ public class EventoController {
     EventoServiceImpl eventoService;
 
     @GetMapping(value = "/evento/listar")
-    public List<Evento> getEventos(){
-        return eventoService.getEventos();
+    public List<Evento> getAllEventos(){
+        return eventoService.getAllEventos();
     }
 
     @PostMapping(value = "/evento/criar")
-    public Evento criarEvento(NovoEvento info){
+    public Evento criarEvento(EventoModel info){
         return eventoService.criarEvento(info);
     }
 
-    //@PostMapping(value = "/evento/{id_evento}/editar")
+    @PostMapping(value = "/evento/{id_evento}/editar")
+    public Evento editarEvento(@PathVariable ("id_evento") Long id, @RequestBody EventoModel info) {
+        return eventoService.editarEvento(id, info);
+    }
 }
