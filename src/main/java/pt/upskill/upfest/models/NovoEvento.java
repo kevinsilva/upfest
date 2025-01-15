@@ -1,9 +1,9 @@
 package pt.upskill.upfest.models;
 
-public class CriarEvento {
+public class NovoEvento {
     private String designacao;
 
-    public CriarEvento(String designacao) {
+    public NovoEvento(String designacao) {
         this.designacao = designacao;
     }
 
