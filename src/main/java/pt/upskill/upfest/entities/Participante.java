@@ -14,9 +14,10 @@ public class Participante {
     private Long id;
     private String email;
     private String nome;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_registo;
 
+    public Participante(){}
 
     public Long getId() {
         return id;
@@ -49,4 +50,5 @@ public class Participante {
     public void setData_registo(LocalDateTime data_registo) {
         this.data_registo = data_registo;
     }
+
 }

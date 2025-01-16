@@ -16,10 +16,10 @@ public class Pagamento {
     private int referencia;
     private double valor;
 
-    @DateTimeFormat(pattern = "dd-MM-yyy HH:mm")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_compra;
 
-    @DateTimeFormat(pattern = "dd-MM-yyy HH:mm")
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_validado;
 
 
