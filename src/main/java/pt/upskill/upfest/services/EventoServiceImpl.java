@@ -48,6 +48,7 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento criarEvento(EventoModel info) {
         Evento evento = new Evento();
+        System.out.println("AQUI: " + evento.getId());
         evento.setDesignacao(info.getDesignacao());
         return eventoRepository.save(evento);
     }
