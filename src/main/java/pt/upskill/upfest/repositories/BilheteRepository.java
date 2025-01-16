@@ -3,6 +3,8 @@ package pt.upskill.upfest.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pt.upskill.upfest.entities.Bilhete;
+import pt.upskill.upfest.entities.Evento;
+import pt.upskill.upfest.entities.SerieBilhete;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +17,4 @@ public interface BilheteRepository extends JpaRepository <Bilhete, Long> {
     List<Bilhete> findByEventoId(Long eventoId);
 
     List<Bilhete> findByParticipanteEmail(String email);
-
 }

@@ -1,13 +1,7 @@
 package pt.upskill.upfest.services;
 
-import pt.upskill.upfest.entities.Artista;
-import pt.upskill.upfest.entities.Concerto;
-import pt.upskill.upfest.entities.Evento;
-import pt.upskill.upfest.entities.Palco;
-import pt.upskill.upfest.models.ArtistaModel;
-import pt.upskill.upfest.models.ConcertoModel;
-import pt.upskill.upfest.models.EventoModel;
-import pt.upskill.upfest.models.PalcoModel;
+import pt.upskill.upfest.entities.*;
+import pt.upskill.upfest.models.*;
 
 import java.util.List;
 
@@ -19,6 +13,10 @@ public interface EventoService {
     Palco getPalco(Long id);
 
     Artista getArtista(Long id);
+
+    Concerto getConcerto(Long id);
+
+    SerieBilhete getSerieBilhete(Long id);
 
     List<Evento> getAllEventos();
 
@@ -41,4 +39,12 @@ public interface EventoService {
     List<Concerto> getAllConcertos(Evento evento);
 
     Concerto criarConcerto(Long id, ConcertoModel info);
+
+    Concerto editarConcerto(Long idEvento, ConcertoModel info, Long idConcerto);
+
+    List<SerieBilhete> getAllSerieBilhetes(Evento evento);
+
+    SerieBilhete criarSerieBilhete(Long id, SerieBilheteModel info);
+
+    SerieBilhete editarSerieBilhete(Long idEvento, SerieBilheteModel info, Long idSerie);
 }

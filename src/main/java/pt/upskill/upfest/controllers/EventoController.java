@@ -3,10 +3,7 @@ package pt.upskill.upfest.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pt.upskill.upfest.entities.*;
-import pt.upskill.upfest.models.ArtistaModel;
-import pt.upskill.upfest.models.ConcertoModel;
-import pt.upskill.upfest.models.EventoModel;
-import pt.upskill.upfest.models.PalcoModel;
+import pt.upskill.upfest.models.*;
 import pt.upskill.upfest.services.EventoServiceImpl;
 
 import java.util.List;
@@ -74,5 +71,25 @@ public class EventoController {
     @PostMapping(value = "/evento/{id_evento}/concertos/criar")
     public Concerto criarConcerto(@PathVariable ("id_evento") Long id, @RequestBody ConcertoModel info){
         return eventoService.criarConcerto(id, info);
+    }
+
+    @PostMapping(value = "/evento/{id_evento}/concertos/{id_concerto}/editar")
+    public Concerto editarConcerto(@PathVariable ("id_evento") Long idEvento, @RequestBody ConcertoModel info, @PathVariable("id_concerto") Long idConcerto) {
+        return eventoService.editarConcerto(idEvento, info, idConcerto);
+    }
+
+    @GetMapping(value = "/evento/{id_evento}/series_bilhetes/listar")
+    public List<SerieBilhete> getAllSerieBilhetes(@ModelAttribute ("id_evento") Evento evento) {
+        return eventoService.getAllSerieBilhetes(evento);
+    }
+
+    @PostMapping(value = "/evento/{id_evento}/series_bilhetes/criar")
+    public SerieBilhete criarSerieBilhete(@PathVariable ("id_evento") Long id, @RequestBody SerieBilheteModel info){
+        return eventoService.criarSerieBilhete(id, info);
+    }
+
+    @PostMapping(value = "/evento/{id_evento}/series_bilhetes/{id_serie}/editar")
+    public SerieBilhete editarSerieBilhete(@PathVariable ("id_evento") Long idEvento, @RequestBody SerieBilheteModel info, @PathVariable("id_serie") Long idSerie) {
+        return eventoService.editarSerieBilhete(idEvento, info, idSerie);
     }
 }

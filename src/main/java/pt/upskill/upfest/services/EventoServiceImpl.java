@@ -2,18 +2,9 @@ package pt.upskill.upfest.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pt.upskill.upfest.entities.Artista;
-import pt.upskill.upfest.entities.Concerto;
-import pt.upskill.upfest.entities.Evento;
-import pt.upskill.upfest.entities.Palco;
-import pt.upskill.upfest.models.ArtistaModel;
-import pt.upskill.upfest.models.ConcertoModel;
-import pt.upskill.upfest.models.EventoModel;
-import pt.upskill.upfest.models.PalcoModel;
-import pt.upskill.upfest.repositories.ArtistaRepository;
-import pt.upskill.upfest.repositories.ConcertoRepository;
-import pt.upskill.upfest.repositories.EventoRepository;
-import pt.upskill.upfest.repositories.PalcoRepository;
+import pt.upskill.upfest.entities.*;
+import pt.upskill.upfest.models.*;
+import pt.upskill.upfest.repositories.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +20,8 @@ public class EventoServiceImpl implements EventoService {
     ArtistaRepository artistaRepository;
     @Autowired
     ConcertoRepository concertoRepository;
+    @Autowired
+    SerieBilheteRepository serieBilheteRepository;
 
     //Evento
     @Override
@@ -53,7 +46,25 @@ public class EventoServiceImpl implements EventoService {
     public Artista getArtista(Long id) {
         Optional<Artista> opt = artistaRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Palco " + id + " não existe.");
+            throw new RuntimeException("Artista " + id + " não existe.");
+        }
+        return opt.get();
+    }
+
+    @Override
+    public Concerto getConcerto(Long id) {
+        Optional<Concerto> opt = concertoRepository.findById(id);
+        if(opt.isEmpty()) {
+            throw new RuntimeException("Concerto " + id + " não existe.");
+        }
+        return opt.get();
+    }
+
+    @Override
+    public SerieBilhete getSerieBilhete(Long id) {
+        Optional<SerieBilhete> opt = serieBilheteRepository.findById(id);
+        if(opt.isEmpty()) {
+            throw new RuntimeException("Série de bilhetes " + id + " não existe.");
         }
         return opt.get();
     }
@@ -135,6 +146,7 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public Concerto criarConcerto(Long id, ConcertoModel info) {
+        //Artista e Palco a null
         Evento evento = getEvento(id);
 
         Concerto concerto = new Concerto();
@@ -143,5 +155,43 @@ public class EventoServiceImpl implements EventoService {
         concerto.setEvento(evento);
         return concertoRepository.save(concerto);
     }
+
+    @Override
+    public Concerto editarConcerto(Long idEvento, ConcertoModel info, Long idConcerto) {
+        //Artista e Palco a null
+        Concerto concerto = getConcerto(idConcerto);
+        concerto.setData_hora_inicio(info.getData_hora_inicio());
+        concerto.setData_hora_fim(info.getData_hora_fim());
+        return concertoRepository.save(concerto);
+    }
+
+    @Override
+    public List<SerieBilhete> getAllSerieBilhetes(Evento evento) {
+        return serieBilheteRepository.findAllByEvento(evento);
+    }
+
+    @Override
+    public SerieBilhete criarSerieBilhete(Long id, SerieBilheteModel info) {
+        Evento evento = getEvento(id);
+
+        SerieBilhete serieBilhete = new SerieBilhete();
+        serieBilhete.setDesignacao(info.getDesignacao());
+        serieBilhete.setNumero_bilhetes(info.getNumero_bilhetes());
+        serieBilhete.setLimite_vendas(info.getLimite_vendas());
+        serieBilhete.setCusto(info.getCusto());
+        serieBilhete.setEvento(evento);
+        return serieBilheteRepository.save(serieBilhete);
+    }
+
+    @Override
+    public SerieBilhete editarSerieBilhete(Long idEvento, SerieBilheteModel info, Long idSerie) {
+        SerieBilhete serieBilhete = getSerieBilhete(idSerie);
+        serieBilhete.setDesignacao(info.getDesignacao());
+        serieBilhete.setNumero_bilhetes(info.getNumero_bilhetes());
+        serieBilhete.setLimite_vendas(info.getLimite_vendas());
+        serieBilhete.setCusto(info.getCusto());
+        return serieBilheteRepository.save(serieBilhete);
+    }
+
 
 }
