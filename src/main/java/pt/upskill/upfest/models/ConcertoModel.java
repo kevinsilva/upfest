@@ -11,6 +11,9 @@ public class ConcertoModel {
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_hora_fim;
 
+    private Long artista;
+    private Long palco;
+
     public ConcertoModel(LocalDateTime data_hora_inicio, LocalDateTime data_hora_fim) {
         this.data_hora_inicio = data_hora_inicio;
         this.data_hora_fim = data_hora_fim;
@@ -30,5 +33,21 @@ public class ConcertoModel {
 
     public void setData_hora_fim(LocalDateTime data_hora_fim) {
         this.data_hora_fim = data_hora_fim;
+    }
+
+    public Long getArtista() {
+        return artista;
+    }
+
+    public void setArtista(Long artista) {
+        this.artista = artista;
+    }
+
+    public Long getPalco() {
+        return palco;
+    }
+
+    public void setPalco(Long palco) {
+        this.palco = palco;
     }
 }

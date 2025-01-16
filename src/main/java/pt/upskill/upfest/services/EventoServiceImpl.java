@@ -110,8 +110,11 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public Palco editarPalco(Long idEvento, PalcoModel info, Long idPalco) {
+        Evento evento = getEvento(idEvento);
+
         Palco palco = getPalco(idPalco);
         palco.setDesignacao(info.getDesignacao());
+        palco.setEvento(evento);
         return palcoRepository.save(palco);
     }
 
@@ -135,10 +138,13 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public Artista editarArtista(Long idEvento, ArtistaModel info, Long idArtista) {
+        Evento evento = getEvento(idEvento);
+
         Artista artista = getArtista(idArtista);
         artista.setNome(info.getNome());
         artista.setEstilo(info.getEstilo());
         artista.setBiografia(info.getBiografia());
+        artista.setEvento(evento);
         return artistaRepository.save(artista);
     }
 
@@ -150,22 +156,31 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public Concerto criarConcerto(Long id, ConcertoModel info) {
-        //Artista e Palco a null
         Evento evento = getEvento(id);
+        Artista artista = getArtista(info.getArtista());
+        Palco palco = getPalco(info.getPalco());
 
         Concerto concerto = new Concerto();
         concerto.setData_hora_inicio(info.getData_hora_inicio());
         concerto.setData_hora_fim(info.getData_hora_fim());
         concerto.setEvento(evento);
+        concerto.setArtista(artista);
+        concerto.setPalco(palco);
         return concertoRepository.save(concerto);
     }
 
     @Override
     public Concerto editarConcerto(Long idEvento, ConcertoModel info, Long idConcerto) {
-        //Artista e Palco a null
+        Evento evento = getEvento(idEvento);
+        Artista artista = getArtista(info.getArtista());
+        Palco palco = getPalco(info.getPalco());
+
         Concerto concerto = getConcerto(idConcerto);
         concerto.setData_hora_inicio(info.getData_hora_inicio());
         concerto.setData_hora_fim(info.getData_hora_fim());
+        concerto.setEvento(evento);
+        concerto.setArtista(artista);
+        concerto.setPalco(palco);
         return concertoRepository.save(concerto);
     }
 
@@ -190,13 +205,14 @@ public class EventoServiceImpl implements EventoService {
 
     @Override
     public SerieBilhete editarSerieBilhete(Long idEvento, SerieBilheteModel info, Long idSerie) {
+        Evento evento = getEvento(idEvento);
+
         SerieBilhete serieBilhete = getSerieBilhete(idSerie);
         serieBilhete.setDesignacao(info.getDesignacao());
         serieBilhete.setNumero_bilhetes(info.getNumero_bilhetes());
         serieBilhete.setLimite_vendas(info.getLimite_vendas());
         serieBilhete.setCusto(info.getCusto());
+        serieBilhete.setEvento(evento);
         return serieBilheteRepository.save(serieBilhete);
     }
-
-
 }
