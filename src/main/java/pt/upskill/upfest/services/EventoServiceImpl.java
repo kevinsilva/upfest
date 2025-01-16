@@ -3,22 +3,31 @@ package pt.upskill.upfest.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.upskill.upfest.entities.Evento;
+import pt.upskill.upfest.entities.Palco;
 import pt.upskill.upfest.models.EventoModel;
+import pt.upskill.upfest.models.PalcoModel;
 import pt.upskill.upfest.repositories.EventoRepository;
+import pt.upskill.upfest.repositories.PalcoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EventoServiceImpl implements EventoService {
 
     @Autowired
     EventoRepository eventoRepository;
+    @Autowired
+    PalcoRepository palcoRepository;
 
     //Evento
     @Override
     public Evento getEvento(Long id) {
-        Evento evento = eventoRepository.getById(id);
-        return evento;
+        Optional<Evento> opt = eventoRepository.findById(id);
+        if(opt.isEmpty()) {
+            throw new RuntimeException("Evento " + id + " não existe.");
+        }
+        return opt.get();
     }
 
     @Override
@@ -36,11 +45,31 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento editarEvento(Long id, EventoModel info) {
         Evento evento = getEvento(id);
-        if (evento == null){
-            throw new RuntimeException("Evento " + id + " não existe.");
-        }
+
         evento.setDesignacao(info.getDesignacao());
         return eventoRepository.save(evento);
+    }
+
+
+    //Palco
+    @Override
+    public List<Palco> getAllPalcos(Evento evento) {
+        return palcoRepository.findAllByEvento(evento);
+    }
+
+    @Override
+    public Palco criarPalco(Long id, PalcoModel info) {
+        Evento evento = getEvento(id);
+
+        Palco palco = new Palco();
+        palco.setDesignacao(info.getDesignacao());
+        palco.setEvento(evento);
+        return palcoRepository.save(palco);
+    }
+
+    @Override
+    public Palco editarPalco(Long id, PalcoModel info) {
+        return null;
     }
 
 }

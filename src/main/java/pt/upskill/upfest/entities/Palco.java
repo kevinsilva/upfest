@@ -1,5 +1,6 @@
 package pt.upskill.upfest.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,6 +16,7 @@ public class Palco {
     private String designacao;
 
     @ManyToOne
+    //@JsonIgnore//Ignora este campo de serialização
     private Evento evento;
 
 

@@ -4,10 +4,6 @@ public class PalcoModel {
 
     private String designacao;
 
-    public PalcoModel(String designacao) {
-        this.designacao = designacao;
-    }
-
     public String getDesignacao() {
         return designacao;
     }
