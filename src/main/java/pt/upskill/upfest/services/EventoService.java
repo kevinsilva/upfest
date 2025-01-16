@@ -12,6 +12,8 @@ public interface EventoService {
     //Evento
     Evento getEvento(Long id);
 
+    Palco getPalco(Long id);
+
     List<Evento> getAllEventos();
 
     Evento criarEvento(EventoModel info);
@@ -22,5 +24,5 @@ public interface EventoService {
 
     Palco criarPalco(Long id, PalcoModel info);
 
-    Palco editarPalco(Long id, PalcoModel info);
+    Palco editarPalco(Long idEvento, PalcoModel info, Long idPalco);
 }

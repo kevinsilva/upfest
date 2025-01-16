@@ -31,6 +31,16 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
+    public Palco getPalco(Long id) {
+        Optional<Palco> opt = palcoRepository.findById(id);
+        if(opt.isEmpty()) {
+            throw new RuntimeException("Palco " + id + " não existe.");
+        }
+        return opt.get();
+    }
+
+
+    @Override
     public List<Evento> getAllEventos() {
         return eventoRepository.findAll();
     }
@@ -68,8 +78,10 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Palco editarPalco(Long id, PalcoModel info) {
-        return null;
+    public Palco editarPalco(Long idEvento, PalcoModel info, Long idPalco) {
+        Palco palco = getPalco(idPalco);
+        palco.setDesignacao(info.getDesignacao());
+        return palcoRepository.save(palco);
     }
 
 }

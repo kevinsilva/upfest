@@ -28,7 +28,7 @@ public class EventoController {
     }
 
     @PostMapping(value = "/evento/{id_evento}/editar")
-    public Evento editarEvento(@PathVariable ("id_evento") Long id, @ModelAttribute EventoModel info) {
+    public Evento editarEvento(@PathVariable ("id_evento") Long id, @RequestBody EventoModel info) {
         return eventoService.editarEvento(id, info);
     }
 
@@ -44,7 +44,7 @@ public class EventoController {
     }
 
     @PostMapping(value = "/evento/{id_evento}/palco/{id_palco}/editar")
-    public Palco editarPalco(@PathVariable ("id_evento") Long id, @RequestBody PalcoModel info) {
-        return eventoService.editarPalco(id, info);
+    public Palco editarPalco(@PathVariable ("id_evento") Long idEvento, @RequestBody PalcoModel info, @PathVariable("id_palco") Long idPalco) {
+        return eventoService.editarPalco(idEvento, info, idEvento);
     }
 }
