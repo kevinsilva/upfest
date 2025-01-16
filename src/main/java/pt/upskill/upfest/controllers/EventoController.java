@@ -78,6 +78,7 @@ public class EventoController {
         return eventoService.editarConcerto(idEvento, info, idConcerto);
     }
 
+    //Serie_Bilhete
     @GetMapping(value = "/evento/{id_evento}/series_bilhetes/listar")
     public List<SerieBilhete> getAllSerieBilhetes(@ModelAttribute ("id_evento") Evento evento) {
         return eventoService.getAllSerieBilhetes(evento);

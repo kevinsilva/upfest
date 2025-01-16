@@ -3,12 +3,12 @@ package pt.upskill.upfest.models;
 public class ArtistaModel {
     private String nome;
     private String estilo;
-    private String bibliografia;
+    private String biografia;
 
     public ArtistaModel(String nome, String estilo, String bibliografia) {
         this.nome = nome;
         this.estilo = estilo;
-        this.bibliografia = bibliografia;
+        this.biografia = bibliografia;
     }
 
     public String getNome() {
@@ -27,11 +27,11 @@ public class ArtistaModel {
         this.estilo = estilo;
     }
 
-    public String getBibliografia() {
-        return bibliografia;
+    public String getBiografia() {
+        return biografia;
     }
 
-    public void setBibliografia(String bibliografia) {
-        this.bibliografia = bibliografia;
+    public void setBiografia(String biografia) {
+        this.biografia = biografia;
     }
 }

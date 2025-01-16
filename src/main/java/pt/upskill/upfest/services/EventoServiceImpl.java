@@ -23,7 +23,7 @@ public class EventoServiceImpl implements EventoService {
     @Autowired
     SerieBilheteRepository serieBilheteRepository;
 
-    //Evento
+
     @Override
     public Evento getEvento(Long id) {
         Optional<Evento> opt = eventoRepository.findById(id);
@@ -70,6 +70,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
 
+    //Evento
     @Override
     public List<Evento> getAllEventos() {
         return eventoRepository.findAll();
@@ -78,7 +79,6 @@ public class EventoServiceImpl implements EventoService {
     @Override
     public Evento criarEvento(EventoModel info) {
         Evento evento = new Evento();
-        System.out.println("AQUI: " + evento.getId());
         evento.setDesignacao(info.getDesignacao());
         return eventoRepository.save(evento);
     }
@@ -115,6 +115,7 @@ public class EventoServiceImpl implements EventoService {
         return palcoRepository.save(palco);
     }
 
+    //Artista
     @Override
     public List<Artista> getAllArtistas(Evento evento) {
         return artistaRepository.findAllByEvento(evento);
@@ -127,7 +128,7 @@ public class EventoServiceImpl implements EventoService {
         Artista artista = new Artista();
         artista.setNome(info.getNome());
         artista.setEstilo(info.getEstilo());
-        artista.setBiografia(info.getBibliografia());
+        artista.setBiografia(info.getBiografia());
         artista.setEvento(evento);
         return artistaRepository.save(artista);
     }
@@ -136,9 +137,12 @@ public class EventoServiceImpl implements EventoService {
     public Artista editarArtista(Long idEvento, ArtistaModel info, Long idArtista) {
         Artista artista = getArtista(idArtista);
         artista.setNome(info.getNome());
+        artista.setEstilo(info.getEstilo());
+        artista.setBiografia(info.getBiografia());
         return artistaRepository.save(artista);
     }
 
+    //Concerto
     @Override
     public List<Concerto> getAllConcertos(Evento evento) {
         return concertoRepository.findAllByEvento(evento);
@@ -165,6 +169,7 @@ public class EventoServiceImpl implements EventoService {
         return concertoRepository.save(concerto);
     }
 
+    //Serie_Bilhete
     @Override
     public List<SerieBilhete> getAllSerieBilhetes(Evento evento) {
         return serieBilheteRepository.findAllByEvento(evento);

@@ -1,9 +1,6 @@
 package pt.upskill.upfest.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Artista {
@@ -13,6 +10,7 @@ public class Artista {
 
     private String nome;
     private String estilo;
+    @Column(length = 2000)
     private String biografia;
 
     @ManyToOne
