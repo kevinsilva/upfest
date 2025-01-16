@@ -16,7 +16,6 @@ public class Palco {
     private String designacao;
 
     @ManyToOne
-    //@JsonIgnore//Ignora este campo de serialização
     private Evento evento;
 
 

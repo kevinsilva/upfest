@@ -13,7 +13,7 @@ public class Artista {
 
     private String nome;
     private String estilo;
-    private String bibliografia;
+    private String biografia;
 
     @ManyToOne
     private Evento evento;
@@ -43,12 +43,12 @@ public class Artista {
         this.estilo = estilo;
     }
 
-    public String getBibliografia() {
-        return bibliografia;
+    public String getBiografia() {
+        return biografia;
     }
 
-    public void setBibliografia(String bibliografia) {
-        this.bibliografia = bibliografia;
+    public void setBiografia(String biografia) {
+        this.biografia = biografia;
     }
 
     public Evento getEvento() {

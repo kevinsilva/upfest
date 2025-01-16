@@ -2,8 +2,9 @@ package pt.upskill.upfest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pt.upskill.upfest.entities.Evento;
-import pt.upskill.upfest.entities.Palco;
+import pt.upskill.upfest.entities.*;
+import pt.upskill.upfest.models.ArtistaModel;
+import pt.upskill.upfest.models.ConcertoModel;
 import pt.upskill.upfest.models.EventoModel;
 import pt.upskill.upfest.models.PalcoModel;
 import pt.upskill.upfest.services.EventoServiceImpl;
@@ -45,6 +46,33 @@ public class EventoController {
 
     @PostMapping(value = "/evento/{id_evento}/palco/{id_palco}/editar")
     public Palco editarPalco(@PathVariable ("id_evento") Long idEvento, @RequestBody PalcoModel info, @PathVariable("id_palco") Long idPalco) {
-        return eventoService.editarPalco(idEvento, info, idEvento);
+        return eventoService.editarPalco(idEvento, info, idPalco);
+    }
+
+    //Artista
+    @GetMapping(value = "/evento/{id_evento}/artistas/listar")
+    public List<Artista> getAllArtistas(@ModelAttribute ("id_evento") Evento evento) {
+        return eventoService.getAllArtistas(evento);
+    }
+
+    @PostMapping(value = "/evento/{id_evento}/artistas/criar")
+    public Artista criarArtista(@PathVariable ("id_evento") Long id, @RequestBody ArtistaModel info){
+        return eventoService.criarArtista(id, info);
+    }
+
+    @PostMapping(value = "/evento/{id_evento}/artistas/{id_artista}/editar")
+    public Artista editarArtista(@PathVariable ("id_evento") Long idEvento, @RequestBody ArtistaModel info, @PathVariable("id_artista") Long idArtista) {
+        return eventoService.editarArtista(idEvento, info, idArtista);
+    }
+
+    //Concerto
+    @GetMapping(value = "/evento/{id_evento}/concertos/listar")
+    public List<Concerto> getAllConcertos(@ModelAttribute ("id_evento") Evento evento) {
+        return eventoService.getAllConcertos(evento);
+    }
+
+    @PostMapping(value = "/evento/{id_evento}/concertos/criar")
+    public Concerto criarConcerto(@PathVariable ("id_evento") Long id, @RequestBody ConcertoModel info){
+        return eventoService.criarConcerto(id, info);
     }
 }

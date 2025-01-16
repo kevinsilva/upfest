@@ -1,7 +1,11 @@
 package pt.upskill.upfest.services;
 
+import pt.upskill.upfest.entities.Artista;
+import pt.upskill.upfest.entities.Concerto;
 import pt.upskill.upfest.entities.Evento;
 import pt.upskill.upfest.entities.Palco;
+import pt.upskill.upfest.models.ArtistaModel;
+import pt.upskill.upfest.models.ConcertoModel;
 import pt.upskill.upfest.models.EventoModel;
 import pt.upskill.upfest.models.PalcoModel;
 
@@ -14,6 +18,8 @@ public interface EventoService {
 
     Palco getPalco(Long id);
 
+    Artista getArtista(Long id);
+
     List<Evento> getAllEventos();
 
     Evento criarEvento(EventoModel info);
@@ -25,4 +31,14 @@ public interface EventoService {
     Palco criarPalco(Long id, PalcoModel info);
 
     Palco editarPalco(Long idEvento, PalcoModel info, Long idPalco);
+
+    List<Artista> getAllArtistas(Evento evento);
+
+    Artista criarArtista(Long id, ArtistaModel info);
+
+    Artista editarArtista(Long idEvento, ArtistaModel info, Long idArtista);
+
+    List<Concerto> getAllConcertos(Evento evento);
+
+    Concerto criarConcerto(Long id, ConcertoModel info);
 }
