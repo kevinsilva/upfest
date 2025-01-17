@@ -2,12 +2,10 @@ package pt.upskill.upfest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pt.upskill.upfest.entities.Bilhete;
-import pt.upskill.upfest.entities.Evento;
-import pt.upskill.upfest.entities.Pagamento;
-import pt.upskill.upfest.entities.Participante;
+import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.models.ComprarBilheteModel;
 import pt.upskill.upfest.models.PagamentoModel;
+import pt.upskill.upfest.models.ValidarEntradaModel;
 import pt.upskill.upfest.services.VendasService;
 
 import java.util.List;
@@ -36,5 +34,11 @@ public class VendasController {
     @GetMapping("/vendas/participantes/listar")
     public List<Participante> listarParticipantes(@RequestParam Long evento) {
         return vendasService.listarParticipantes(evento);
+    }
+
+
+    @PostMapping("/vendas/bilhetes/validar_entrada")
+    public Entrada validarEntrada(@RequestBody ValidarEntradaModel validarEntradaModel){
+        return vendasService.validarEntrada(validarEntradaModel);
     }
 }
