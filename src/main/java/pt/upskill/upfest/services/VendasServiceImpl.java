@@ -88,15 +88,17 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
 
     novoBilhete.setSerieBilhete(serieBilheteRepository.findById(bilhete.getSerie())
             .orElseThrow(()->{throw new IllegalArgumentException("SerieBilhete Não Existe");}));
-    novoBilhete.setCodigo(generateBilheteCodigo());
+    novoBilhete.setCodigo("FOEMFOND");
+    //novoBilhete.setCodigo(generateBilheteCodigo());  //para uma implementação real
     novoBilhete.setPagamento(null);
 
     return bilheteRepository.save(novoBilhete);
 }
 
-    private String generateBilheteCodigo() {
-        return UUID.randomUUID().toString().substring(0,12);
-    }
+//Gerar o codigo para uma implementação real
+//    private String generateBilheteCodigo() {
+//        return UUID.randomUUID().toString().substring(0,12);
+//    }
 
 
 
