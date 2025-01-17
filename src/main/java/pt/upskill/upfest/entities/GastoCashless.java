@@ -1,28 +1,30 @@
 package pt.upskill.upfest.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class GastoCashless {
-
+public class GastoCashless extends MovimentoCashless {
     @Id
-    @ManyToOne
-    private MovimentoCashless movimentoCashless;
+    @GeneratedValue
+    private Long id;
+//    @ManyToOne
+//    private MovimentoCashless movimentoCashless;
     @ManyToOne
     private ProdutoComerciante produtoComerciante;
     private int quantidade;
     private double valor_unitario;
 
 
-    public MovimentoCashless getMovimentoCashless() {
-        return movimentoCashless;
-    }
-
-    public void setMovimentoCashless(MovimentoCashless movimentoCashless) {
-        this.movimentoCashless = movimentoCashless;
-    }
+//    public MovimentoCashless getMovimentoCashless() {
+//        return movimentoCashless;
+//    }
+//
+//    public void setMovimentoCashless(MovimentoCashless movimentoCashless) {
+//        this.movimentoCashless = movimentoCashless;
+//    }
 
     public ProdutoComerciante getProdutoComerciante() {
         return produtoComerciante;

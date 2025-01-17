@@ -1,10 +1,10 @@
 package pt.upskill.upfest.models;
 
-public class NovoProdutoComerciante {
+public class ProdutoComercianteModel {
     private String designacao;
     private double valor;
 
-    public NovoProdutoComerciante(String designacao, double valor) {
+    public ProdutoComercianteModel(String designacao, double valor) {
         this.designacao = designacao;
         this.valor = valor;
     }
