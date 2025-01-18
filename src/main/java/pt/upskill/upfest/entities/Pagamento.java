@@ -30,6 +30,16 @@ public class Pagamento {
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_validado;
 
+    public Pagamento(int entidade, int referencia, double valor) {
+        this.entidade = entidade;
+        this.referencia = referencia;
+        this.valor = valor;
+    }
+
+    public Pagamento(){
+
+    }
+
     public Long getId() {
         return id;
     }

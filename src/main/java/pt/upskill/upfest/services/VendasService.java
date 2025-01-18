@@ -25,4 +25,7 @@ public interface VendasService {
     Participante getParticipante(Long id);
 
     Entrada validarEntrada(ValidarEntradaModel info);
+
+    int gerarReferencia();
+    int gerarEntidade(Participante participante);
 }

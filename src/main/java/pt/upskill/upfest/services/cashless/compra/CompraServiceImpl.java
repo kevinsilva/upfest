@@ -21,7 +21,7 @@ public class CompraServiceImpl implements CompraService {
     @Autowired
     ProdutoComercianteRepository produtoComercianteRepository;
     @Autowired
-    GastoCashlessRepository gastoCashlessRepository;
+    MovimentoCashlessRepository movimentoCashlessRepository;
 
     @Override
     public GastoCashless registarCompra(Long idEvento, CompraModel compraModel) {
@@ -34,9 +34,7 @@ public class CompraServiceImpl implements CompraService {
 
         if(!produtoComerciante.getComerciante().getEvento().getId().equals(idEvento)) throw new IllegalArgumentException("The product does not belong to this event.");
 
-        Participante participante = participanteRepository.findByEmail(compraModel.getParticipante());
-        if (participante == null) throw new IllegalArgumentException("Participante not found.");
-
+        Participante participante = participanteRepository.findByEmail(compraModel.getParticipante()).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
         ContaCashless contaCashless =
                 contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
         if (contaCashless == null || contaCashless.getId() == null)  throw new IllegalArgumentException("No cashless " +
@@ -51,11 +49,11 @@ public class CompraServiceImpl implements CompraService {
         gastoCashless.setContaCashless(contaCashless);
         gastoCashless.setValor(total);
         gastoCashless.setSaldo(contaCashless.getValorAtual() - total);
+        gastoCashless.setData(LocalDateTime.now());
         gastoCashless.setProdutoComerciante(produtoComerciante);
         gastoCashless.setQuantidade(compraModel.getQuantidade());
         gastoCashless.setValor_unitario(produtoComerciante.getValor());
-        gastoCashless.setData(LocalDateTime.now());
-        gastoCashless = gastoCashlessRepository.save(gastoCashless);
+        gastoCashless = movimentoCashlessRepository.save(gastoCashless);
 
         contaCashless.setValorAtual(contaCashless.getValorAtual() - total);
         contaCashlessRepository.save(contaCashless);

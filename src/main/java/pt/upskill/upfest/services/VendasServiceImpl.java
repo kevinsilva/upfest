@@ -142,5 +142,12 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
         return entradaRepository.save(entrada);
     }
 
+    public int gerarReferencia() {
+        return UUID.randomUUID().hashCode() % 1000000000;
+    }
 
+    public int gerarEntidade(Participante participante) {
+        String email = participante.getEmail();
+        return Math.abs(email.hashCode());
+    }
 }

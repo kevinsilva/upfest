@@ -5,5 +5,5 @@ import pt.upskill.upfest.entities.CarregamentoCashless;
 public interface CarregamentosService {
 
     CarregamentoCashless carregarConta(Long idEvento, String emailParticipante, double valor);
-    double getSaldo(Long idEvento, String email_participante);
+    double getSaldo(Long idEvento, String emailParticipante);
 }
