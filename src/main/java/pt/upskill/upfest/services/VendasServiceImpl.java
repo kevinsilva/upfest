@@ -32,6 +32,8 @@ public class VendasServiceImpl implements VendasService {
     SerieBilheteRepository serieBilheteRepository;
     @Autowired
     EntradaRepository entradaRepository;
+    @Autowired
+    ContaCashlessRepository contaCashlessRepository;
 
 //    @Override
 //    public List<Participante> listarParticipantes(Long evento) {
@@ -82,7 +84,7 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
                 novoParticipante.setData_registo(LocalDateTime.now());
                 return participanteRepository.save(novoParticipante);
             });
-    Bilhete novoBilhete = new Bilhete();  //TESTED
+    Bilhete novoBilhete = new Bilhete();
     novoBilhete.setEvento(evento);
     novoBilhete.setParticipante(participante);
 
@@ -90,7 +92,17 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
             .orElseThrow(()->{throw new IllegalArgumentException("SerieBilhete Não Existe");}));
     novoBilhete.setCodigo("FOEMFOND");
     //novoBilhete.setCodigo(generateBilheteCodigo());  //para uma implementação real
-    novoBilhete.setPagamento(null);
+    SerieBilhete serieBilhete = novoBilhete.getSerieBilhete();
+    Pagamento pagamento = new Pagamento(12345, 12345643, serieBilhete.getCusto());
+    pagamento.setData_compra(LocalDateTime.now());
+    pagamento = pagamentoRepository.save(pagamento);
+    novoBilhete.setPagamento(pagamento);
+
+    ContaCashless conta = new ContaCashless();
+    conta.setValorAtual(0.0);
+    conta.setParticipante(participante);
+    conta.setEvento(evento);
+    contaCashlessRepository.save(conta);
 
     return bilheteRepository.save(novoBilhete);
 }

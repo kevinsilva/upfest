@@ -6,8 +6,10 @@ import pt.upskill.upfest.entities.Palco;
 import pt.upskill.upfest.entities.SerieBilhete;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface SerieBilheteRepository extends JpaRepository<SerieBilhete, Long> {
     List<SerieBilhete> findAllByEvento(Evento evento);
+    Optional<SerieBilhete> findById (Long id);
 }

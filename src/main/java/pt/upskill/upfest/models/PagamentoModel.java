@@ -10,8 +10,18 @@ public class PagamentoModel {
     private int referencia;
     private double valor;
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    private LocalDateTime data_compra;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_validado;
 
+
+    public LocalDateTime getData_compra() {
+        return data_compra;
+    }
+
+    public void setData_compra(LocalDateTime data_compra) {
+        this.data_compra = data_compra;
+    }
 
     public LocalDateTime getData_validado() {
         return data_validado;
