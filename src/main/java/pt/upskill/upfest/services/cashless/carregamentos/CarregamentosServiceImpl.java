@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.enums.TipoMovimento;
+import pt.upskill.upfest.models.CarregamentoModel;
 import pt.upskill.upfest.models.ValidarPagamentoModel;
 import pt.upskill.upfest.repositories.*;
 import pt.upskill.upfest.services.VendasService;
@@ -30,7 +31,8 @@ public class CarregamentosServiceImpl implements CarregamentosService {
 
     @Override
     public double obterSaldo(Long idEvento, String emailParticipante) {
-        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + "not found"));
+        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento " +
+                "with id " + idEvento + " not found"));
         Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
         ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
         if(contaCashless == null || contaCashless.getId() == null) {
@@ -53,11 +55,16 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     }
 
     @Override
-    public CarregamentoCashless carregarConta(Long idEvento, String emailParticipante, double valor) {
+    public CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel) {
+        String participanteEmail = carregamentoModel.getParticipante();
+        double valor = carregamentoModel.getValor();
+
         if(valor <= 0) throw new IllegalArgumentException("Valor must be greater than 0.");
 
         Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + "not found"));
-        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
+        Participante participante =
+                participanteRepository.findByEmail(participanteEmail).orElseThrow(() -> new IllegalArgumentException(
+                        "Participante not found."));
 
         ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
         if(contaCashless == null || contaCashless.getId() == null) {

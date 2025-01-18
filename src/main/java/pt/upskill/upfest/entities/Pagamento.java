@@ -10,14 +10,10 @@ import java.time.LocalDateTime;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Pagamento {
-    @Autowired
-    PagamentoRepository pagamentoRepository;
 
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(unique = true)
     private int entidade;
     @Column(unique = true)
     private int referencia;
@@ -26,7 +22,6 @@ public class Pagamento {
 
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_compra;
-
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_validado;
 
@@ -36,9 +31,7 @@ public class Pagamento {
         this.valor = valor;
     }
 
-    public Pagamento(){
-
-    }
+    public Pagamento(){}
 
     public Long getId() {
         return id;

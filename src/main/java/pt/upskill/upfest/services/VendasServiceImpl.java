@@ -93,7 +93,8 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
     novoBilhete.setCodigo("FOEMFOND");
     //novoBilhete.setCodigo(generateBilheteCodigo());  //para uma implementação real
     SerieBilhete serieBilhete = novoBilhete.getSerieBilhete();
-    Pagamento pagamento = new Pagamento(12345, 12345643, serieBilhete.getCusto());
+    //Pagamento pagamento = new Pagamento(12345, 12345643, serieBilhete.getCusto());
+    Pagamento pagamento = new Pagamento(this.gerarEntidade(participante), this.gerarReferencia(), serieBilhete.getCusto());
     pagamento.setData_compra(LocalDateTime.now());
     pagamento = pagamentoRepository.save(pagamento);
     novoBilhete.setPagamento(pagamento);
@@ -143,7 +144,7 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
     }
 
     public int gerarReferencia() {
-        return UUID.randomUUID().hashCode() % 1000000000;
+        return Math.abs(UUID.randomUUID().hashCode() % 1000000000);
     }
 
     public int gerarEntidade(Participante participante) {

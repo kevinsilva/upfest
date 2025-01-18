@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pt.upskill.upfest.entities.CarregamentoCashless;
 import pt.upskill.upfest.entities.MovimentoCashless;
 import pt.upskill.upfest.entities.PagamentoCashless;
+import pt.upskill.upfest.models.CarregamentoModel;
 import pt.upskill.upfest.models.ValidarPagamentoModel;
 import pt.upskill.upfest.services.cashless.carregamentos.CarregamentosService;
 
@@ -27,8 +28,8 @@ public class CarregamentosController {
 
     @PostMapping("/{id_evento}/carregar")
     public CarregamentoCashless carregarConta(@PathVariable("id_evento") Long idEvento,
-                                               @RequestParam("participante") String participante, @RequestParam("valor") double valor) {
-        return carregamentosService.carregarConta(idEvento, participante, valor);
+                                              @RequestBody CarregamentoModel carregamentoModel) {
+        return carregamentosService.carregarConta(idEvento, carregamentoModel);
     }
 
     @PostMapping("/validar_pagamento")
