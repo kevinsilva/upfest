@@ -1,26 +1,15 @@
 package pt.upskill.upfest.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class PagamentoCashless {
+public class PagamentoCashless extends Pagamento {
 
-    @Id
-    @ManyToOne
-    private Pagamento pagamento;
     @ManyToOne
     private ContaCashless contaCashless;
-
-
-    public Pagamento getPagamento() {
-        return pagamento;
-    }
-
-    public void setPagamento(Pagamento pagamento) {
-        this.pagamento = pagamento;
-    }
 
     public ContaCashless getContaCashless() {
         return contaCashless;

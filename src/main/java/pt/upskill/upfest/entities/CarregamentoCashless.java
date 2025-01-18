@@ -5,22 +5,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class CarregamentoCashless {
+public class CarregamentoCashless extends MovimentoCashless {
 
-    @Id
-    @ManyToOne
-    private MovimentoCashless movimentoCashless;
     @ManyToOne
     private PagamentoCashless pagamentoCashless;
 
-
-    public MovimentoCashless getMovimentoCashless() {
-        return movimentoCashless;
-    }
-
-    public void setMovimentoCashless(MovimentoCashless movimentoCashless) {
-        this.movimentoCashless = movimentoCashless;
-    }
 
     public PagamentoCashless getPagamentoCashless() {
         return pagamentoCashless;

@@ -1,34 +1,34 @@
 package pt.upskill.upfest.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import pt.upskill.upfest.repositories.PagamentoRepository;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Pagamento {
+    @Autowired
+    PagamentoRepository pagamentoRepository;
+
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(unique = true)
     private int entidade;
+    @Column(unique = true)
     private int referencia;
+
     private double valor;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_compra;
+
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime data_validado;
-
-    public Pagamento(int entidade, int referencia, double valor) {
-        this.entidade = entidade;
-        this.referencia = referencia;
-        this.valor = valor;
-    }
-
-    public Pagamento(){
-
-    }
 
     public Long getId() {
         return id;

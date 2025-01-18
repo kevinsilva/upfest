@@ -7,6 +7,7 @@ import pt.upskill.upfest.enums.TipoMovimento;
 import java.time.LocalDateTime;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class MovimentoCashless {
     @Id
     @GeneratedValue
