@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.enums.TipoMovimento;
+import pt.upskill.upfest.models.ValidarPagamentoModel;
 import pt.upskill.upfest.repositories.*;
 import pt.upskill.upfest.services.VendasService;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class CarregamentosServiceImpl implements CarregamentosService {
@@ -25,6 +27,17 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     PagamentoRepository pagamentoRepository;
     @Autowired
     VendasService vendasService;
+
+    @Override
+    public double getSaldo(Long idEvento, String emailParticipante) {
+        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + "not found"));
+        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
+        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
+        if(contaCashless == null || contaCashless.getId() == null) {
+            return 0;
+        }
+        return contaCashless.getValorAtual();
+    }
 
     @Override
     public CarregamentoCashless carregarConta(Long idEvento, String emailParticipante, double valor) {
@@ -59,15 +72,36 @@ public class CarregamentosServiceImpl implements CarregamentosService {
         return movimentoCashlessRepository.save(carregamentoCashless);
     }
 
-    @Override
-    public double getSaldo(Long idEvento, String emailParticipante) {
-        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + "not found"));
-        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
-        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-        if(contaCashless == null || contaCashless.getId() == null) {
-            return 0;
+    public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
+        int entidade = validarPagamentoModel.getEntidade();
+        int referencia = validarPagamentoModel.getReferencia();
+        double valor = validarPagamentoModel.getValor();
+
+        PagamentoCashless pagamentoCashless = (PagamentoCashless)
+                pagamentoRepository.findByReferenciaAndEntidade(referencia, entidade).orElseThrow(() -> new IllegalArgumentException("Pagamento not found for given reference and entity."));
+        
+        if(pagamentoCashless.getData_validado() != null) {
+            throw new IllegalArgumentException("Pagamento already validated.");
         }
-        return contaCashless.getValorAtual();
+        
+        if(pagamentoCashless.getValor() != valor) {
+            throw new IllegalArgumentException("Pagamento value does not match.");
+        }
+        
+        if (new Random().nextDouble() > 0.8) {
+            throw new IllegalArgumentException("Payment failed.");
+        }
+
+        ContaCashless contaCashless = pagamentoCashless.getContaCashless();
+        double novoValorAtual = contaCashless.getValorAtual() + pagamentoCashless.getValor();
+        contaCashless.setValorAtual(novoValorAtual);
+        contaCashlessRepository.save(contaCashless);
+
+        pagamentoCashless.setData_validado(LocalDateTime.now());
+        pagamentoCashless = pagamentoRepository.save(pagamentoCashless);
+        
+        return pagamentoCashless;
     }
+
 
 }
