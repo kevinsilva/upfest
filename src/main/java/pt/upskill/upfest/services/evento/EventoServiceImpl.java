@@ -1,10 +1,14 @@
-package pt.upskill.upfest.services;
+package pt.upskill.upfest.services.evento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.models.*;
-import pt.upskill.upfest.repositories.*;
+import pt.upskill.upfest.repositories.evento.ArtistaRepository;
+import pt.upskill.upfest.repositories.evento.ConcertoRepository;
+import pt.upskill.upfest.repositories.evento.EventoRepository;
+import pt.upskill.upfest.repositories.evento.PalcoRepository;
+import pt.upskill.upfest.repositories.vendas.SerieBilheteRepository;
 
 import java.util.List;
 import java.util.Optional;

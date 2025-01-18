@@ -1,4 +1,4 @@
-package pt.upskill.upfest.services;
+package pt.upskill.upfest.services.evento;
 
 import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.models.*;

@@ -1,4 +1,4 @@
-package pt.upskill.upfest.services;
+package pt.upskill.upfest.services.vendas;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,9 @@ import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.models.ComprarBilheteModel;
 import pt.upskill.upfest.models.PagamentoModel;
 import pt.upskill.upfest.models.ValidarEntradaModel;
-import pt.upskill.upfest.repositories.*;
+import pt.upskill.upfest.repositories.cashless.ContaCashlessRepository;
+import pt.upskill.upfest.repositories.evento.EventoRepository;
+import pt.upskill.upfest.repositories.vendas.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

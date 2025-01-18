@@ -1,10 +1,8 @@
-package pt.upskill.upfest.repositories;
+package pt.upskill.upfest.repositories.vendas;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pt.upskill.upfest.entities.Bilhete;
-import pt.upskill.upfest.entities.Evento;
-import pt.upskill.upfest.entities.SerieBilhete;
 
 import java.util.List;
 import java.util.Optional;

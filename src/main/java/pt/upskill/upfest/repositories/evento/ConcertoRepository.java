@@ -1,4 +1,4 @@
-package pt.upskill.upfest.repositories;
+package pt.upskill.upfest.repositories.evento;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

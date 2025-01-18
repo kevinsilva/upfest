@@ -1,10 +1,10 @@
-package pt.upskill.upfest.controllers;
+package pt.upskill.upfest.controllers.evento;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.models.*;
-import pt.upskill.upfest.services.EventoServiceImpl;
+import pt.upskill.upfest.services.evento.EventoServiceImpl;
 
 import java.util.List;
 

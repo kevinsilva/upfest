@@ -6,11 +6,14 @@ import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.enums.TipoMovimento;
 import pt.upskill.upfest.models.CarregamentoModel;
 import pt.upskill.upfest.models.ValidarPagamentoModel;
-import pt.upskill.upfest.repositories.*;
-import pt.upskill.upfest.services.VendasService;
+import pt.upskill.upfest.repositories.cashless.ContaCashlessRepository;
+import pt.upskill.upfest.repositories.cashless.MovimentoCashlessRepository;
+import pt.upskill.upfest.repositories.evento.EventoRepository;
+import pt.upskill.upfest.repositories.vendas.PagamentoRepository;
+import pt.upskill.upfest.repositories.vendas.ParticipanteRepository;
+import pt.upskill.upfest.services.vendas.VendasService;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Random;
 
 @Service

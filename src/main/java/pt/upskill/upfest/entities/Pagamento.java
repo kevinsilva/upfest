@@ -1,9 +1,7 @@
 package pt.upskill.upfest.entities;
 
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import pt.upskill.upfest.repositories.PagamentoRepository;
 
 import java.time.LocalDateTime;
 

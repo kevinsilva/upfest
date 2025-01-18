@@ -1,4 +1,4 @@
-package pt.upskill.upfest.controllers;
+package pt.upskill.upfest.controllers.vendas;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -6,7 +6,7 @@ import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.models.ComprarBilheteModel;
 import pt.upskill.upfest.models.PagamentoModel;
 import pt.upskill.upfest.models.ValidarEntradaModel;
-import pt.upskill.upfest.services.VendasService;
+import pt.upskill.upfest.services.vendas.VendasService;
 
 import java.util.List;
 

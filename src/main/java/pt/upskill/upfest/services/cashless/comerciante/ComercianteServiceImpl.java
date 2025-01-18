@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import pt.upskill.upfest.entities.Comerciante;
 import pt.upskill.upfest.entities.Evento;
 import pt.upskill.upfest.models.ComercianteModel;
-import pt.upskill.upfest.repositories.EventoRepository;
+import pt.upskill.upfest.repositories.evento.EventoRepository;
 import pt.upskill.upfest.repositories.cashless.ComercianteRepository;
 import pt.upskill.upfest.repositories.cashless.ProdutoComercianteRepository;
 

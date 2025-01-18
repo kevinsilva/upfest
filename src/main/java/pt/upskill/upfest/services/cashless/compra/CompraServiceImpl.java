@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 import pt.upskill.upfest.entities.*;
 import pt.upskill.upfest.enums.TipoMovimento;
 import pt.upskill.upfest.models.CompraModel;
-import pt.upskill.upfest.repositories.*;
+import pt.upskill.upfest.repositories.cashless.ContaCashlessRepository;
+import pt.upskill.upfest.repositories.cashless.MovimentoCashlessRepository;
 import pt.upskill.upfest.repositories.cashless.ProdutoComercianteRepository;
+import pt.upskill.upfest.repositories.evento.EventoRepository;
+import pt.upskill.upfest.repositories.vendas.ParticipanteRepository;
 
 import java.time.LocalDateTime;
 

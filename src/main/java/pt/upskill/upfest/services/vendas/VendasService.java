@@ -1,4 +1,4 @@
-package pt.upskill.upfest.services;
+package pt.upskill.upfest.services.vendas;
 
 import pt.upskill.upfest.entities.Bilhete;
 import pt.upskill.upfest.entities.Entrada;
