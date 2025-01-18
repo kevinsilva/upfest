@@ -29,7 +29,7 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     VendasService vendasService;
 
     @Override
-    public double getSaldo(Long idEvento, String emailParticipante) {
+    public double obterSaldo(Long idEvento, String emailParticipante) {
         Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + "not found"));
         Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
         ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
@@ -37,6 +37,19 @@ public class CarregamentosServiceImpl implements CarregamentosService {
             return 0;
         }
         return contaCashless.getValorAtual();
+    }
+
+    @Override
+    public Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante) {
+        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + "not found"));
+        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
+
+        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
+        if (contaCashless == null) {
+            throw new IllegalArgumentException("No ContaCashless found for the given event and participant.");
+        }
+
+        return movimentoCashlessRepository.findByContaCashless(contaCashless);
     }
 
     @Override
