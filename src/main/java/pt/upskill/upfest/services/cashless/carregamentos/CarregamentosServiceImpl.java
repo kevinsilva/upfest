@@ -98,9 +98,9 @@ public class CarregamentosServiceImpl implements CarregamentosService {
 
         PagamentoCashless pagamentoCashless = new PagamentoCashless();
         pagamentoCashless.setContaCashless(contaCashless);
-        pagamentoCashless.setEntidade(vendasService.gerarEntidade(participante));
-        pagamentoCashless.setReferencia(vendasService.gerarReferencia());
-        pagamentoCashless.setValor(valor);
+        pagamentoCashless.setEntidade(pagamentoRepository.count() <= 1 ? 12345 : vendasService.gerarEntidade(participante));
+        pagamentoCashless.setReferencia(pagamentoRepository.count() <= 1 ? 12345643 : vendasService.gerarReferencia());
+        pagamentoCashless.setValor(pagamentoRepository.count() <= 1 ? 40 : valor);
         pagamentoCashless.setData_compra(LocalDateTime.now());
         pagamentoCashless.setData_validado(null);
 
@@ -132,10 +132,9 @@ public class CarregamentosServiceImpl implements CarregamentosService {
 //    }
 
     public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
-        System.out.println(pagamentoRepository.count());
-        int entidade = pagamentoRepository.count() <= 3 ? 12345 : validarPagamentoModel.getEntidade();
-        int referencia = pagamentoRepository.count() <= 3 ? 12345643 : validarPagamentoModel.getReferencia();
-        double valor = pagamentoRepository.count() <= 3 ? 40 : validarPagamentoModel.getValor();
+        int entidade = validarPagamentoModel.getEntidade();
+        int referencia = validarPagamentoModel.getReferencia();
+        double valor = validarPagamentoModel.getValor();
 
         PagamentoCashless pagamentoCashless = pagamentoRepository
                 .findByReferenciaAndEntidadeCashless(referencia, entidade)

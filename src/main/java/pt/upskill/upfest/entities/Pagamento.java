@@ -13,7 +13,6 @@ public class Pagamento {
     @GeneratedValue
     private Long id;
     private int entidade;
-    @Column(unique = true)
     private int referencia;
 
     private double valor;
