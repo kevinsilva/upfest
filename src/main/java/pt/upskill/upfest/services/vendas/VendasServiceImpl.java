@@ -53,7 +53,7 @@ public class VendasServiceImpl implements VendasService {
     public Participante getParticipante(Long id) {
         Optional<Participante> opt = participanteRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Participante " + id + " não existe.");
+            throw new RuntimeException("Participante " + id + " não encontrado.");
         }
         return opt.get();
     }
@@ -62,7 +62,7 @@ public class VendasServiceImpl implements VendasService {
     @Override
     public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
         Evento evento = eventoRepository.findById(bilhete.getEvento())
-                .orElseThrow(()->{throw new IllegalArgumentException("Evento Não Existe");});  //TESTED
+                .orElseThrow(()->{throw new IllegalArgumentException("Evento não encontrado.");});
 
         Participante participante = participanteRepository
                 .findByEmail(bilhete.getEmail())
@@ -79,7 +79,7 @@ public class VendasServiceImpl implements VendasService {
         novoBilhete.setParticipante(participante);
 
         novoBilhete.setSerieBilhete(serieBilheteRepository.findById(bilhete.getSerie())
-                .orElseThrow(()->{throw new IllegalArgumentException("SerieBilhete Não Existe");}));
+                .orElseThrow(()->{throw new IllegalArgumentException("SerieBilhete não encontrado.");}));
         novoBilhete.setCodigo(this.gerarCodigoBilhete());
         //novoBilhete.setCodigo(generateBilheteCodigo());  //para uma implementação real
         SerieBilhete serieBilhete = novoBilhete.getSerieBilhete();
@@ -103,8 +103,8 @@ public class VendasServiceImpl implements VendasService {
     @Override
     public Pagamento validarPagamento(PagamentoModel info) {
         Pagamento pagamento = pagamentoRepository.findByReferenciaAndEntidade(info.getReferencia(), info.getEntidade())
-                .orElseThrow(()->{throw new IllegalArgumentException("Pagamento não Existe");});
-        if (pagamento.getData_validado() != null) { throw new IllegalArgumentException("Pagamento já Validado");}
+                .orElseThrow(()->{throw new IllegalArgumentException("Pagamento não encontrado.");});
+        if (pagamento.getData_validado() != null) { throw new IllegalArgumentException("Pagamento já validado.");}
         pagamento.setData_validado(LocalDateTime.now());
         return pagamentoRepository.save(pagamento);
     }
@@ -112,10 +112,10 @@ public class VendasServiceImpl implements VendasService {
     @Override
     public Entrada validarEntrada(ValidarEntradaModel info) {
         Bilhete bilhete = bilheteRepository.findByCodigo(info.getCodigo())
-                .orElseThrow(()->{throw new IllegalArgumentException("Não Existe Bilhete c/ codigo");});
+                .orElseThrow(()->{throw new IllegalArgumentException("Não existe Bilhete com este código.");});
 
         if (entradaRepository.findByBilhete(bilhete).isPresent()) {
-            throw new IllegalArgumentException("Entrada Já Existe");
+            throw new IllegalArgumentException("Entrada já existente.");
         }
 
         //Criar Entrada

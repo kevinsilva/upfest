@@ -29,23 +29,28 @@ public class CompraServiceImpl implements CompraService {
     @Override
     public GastoCashless registarCompra(Long idEvento, CompraModel compraModel) {
         Evento evento = eventoRepository
-                .findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + " not found."));
+                .findById(idEvento).orElseThrow(() ->
+                        new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
 
 
         ProdutoComerciante produtoComerciante =
-                produtoComercianteRepository.findById(compraModel.getProduto()).orElseThrow(()-> new IllegalArgumentException("Produto not found."));
+                produtoComercianteRepository.findById(compraModel.getProduto()).orElseThrow(()->
+                        new IllegalArgumentException("Produto não encontrado."));
 
-        if(!produtoComerciante.getComerciante().getEvento().getId().equals(idEvento)) throw new IllegalArgumentException("The product does not belong to this event.");
+        if(!produtoComerciante.getComerciante().getEvento().getId().equals(idEvento)) throw new
+                IllegalArgumentException("O produto não pertence a este evento.");
 
-        Participante participante = participanteRepository.findByEmail(compraModel.getParticipante()).orElseThrow(() -> new IllegalArgumentException("Participante not found."));
+        Participante participante = participanteRepository.findByEmail(compraModel.getParticipante()).orElseThrow(() ->
+                new IllegalArgumentException("Participante não encontrado."));
         ContaCashless contaCashless =
                 contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-        if (contaCashless == null || contaCashless.getId() == null)  throw new IllegalArgumentException("No cashless " +
-                "account found for the given participante in this event.");
+        if (contaCashless == null || contaCashless.getId() == null)  throw new
+                IllegalArgumentException("Nenhuma conta cashless " +
+                " encontrada para o participante fornecido neste evento..");
 
         double total = produtoComerciante.getValor() * compraModel.getQuantidade();
-        if(contaCashless.getValorAtual() < total) throw new IllegalArgumentException("Funds do not cover the " +
-                "total cost.");
+        if(contaCashless.getValorAtual() < total) throw new IllegalArgumentException("Os fundos não cobrem " +
+                "o custo total.");
 
         GastoCashless gastoCashless = new GastoCashless();
         gastoCashless.setTipoMovimento(TipoMovimento.GASTO);

@@ -21,31 +21,32 @@ public class ComercianteServiceImpl implements ComercianteService {
     EventoRepository eventoRepository;
 
     @Override
-        public List<Comerciante> listarComerciantes(Long idEvento) {
+    public List<Comerciante> listarComerciantes(Long idEvento) {
         Evento evento = eventoRepository.findById(idEvento)
-                .orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + " not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
 
         return comercianteRepository.findByEvento(evento);
-        }
+    }
 
     @Override
     public Comerciante criarComerciante(Long idEvento, ComercianteModel comercianteModel) {
         Evento evento = eventoRepository.findById(idEvento)
-                .orElseThrow(() -> new IllegalArgumentException("Evento with id " + idEvento + " not found"));
-    
+                .orElseThrow(() -> new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
+
         Comerciante comerciante = new Comerciante();
         comerciante.setDesignacao(comercianteModel.getDesignacao());
         comerciante.setEvento(evento);
-    
+
         return comercianteRepository.save(comerciante);
     }
 
     @Override
     public Comerciante editarComerciante(Long idEvento, Long idComerciante, ComercianteModel comercianteModel) {
-        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() -> new IllegalArgumentException("Comerciante with id " + idComerciante + " not found"));
+        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
+                new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
 
         if(!comerciante.getEvento().getId().equals(idEvento)){
-            throw new IllegalArgumentException("Comerciante is not part of this event");
+            throw new IllegalArgumentException("O comerciante não faz parte deste evento.");
         }
 
         comerciante.setDesignacao(comercianteModel.getDesignacao());

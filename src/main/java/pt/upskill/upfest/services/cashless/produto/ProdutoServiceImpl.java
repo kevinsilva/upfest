@@ -19,18 +19,21 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public List<ProdutoComerciante> listarProdutos(Long idEvento, Long idComerciante) {
-        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() -> new IllegalArgumentException("Comerciante with id " + idComerciante + " not found"));
+        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
+                new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
 
         if (!comerciante.getEvento().getId().equals(idEvento)) {
-            throw new IllegalArgumentException("Comerciante is not part of this event");
+            throw new IllegalArgumentException("O Comerciante não faz parte deste evento.");
         }
 
         return produtoComercianteRepository.findByComerciante(comerciante);
     }
 
     @Override
-    public ProdutoComerciante criarProduto(Long idEvento, Long idComerciante, ProdutoComercianteModel produtoComercianteModel) {
-        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() -> new IllegalArgumentException("Comerciante with id " + idComerciante + " not found"));
+    public ProdutoComerciante criarProduto(Long idEvento, Long idComerciante,
+                                           ProdutoComercianteModel produtoComercianteModel) {
+        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
+                new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
 
         ProdutoComerciante produtoComerciante = new ProdutoComerciante();
         produtoComerciante.setDesignacao(produtoComercianteModel.getDesignacao());
@@ -41,16 +44,19 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public ProdutoComerciante editarProduto(Long idEvento, Long idComerciante, Long idProduto, ProdutoComercianteModel produtoComercianteModel) {
-        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() -> new IllegalArgumentException("Comerciante with id " + idComerciante + " not found"));
-        ProdutoComerciante produtoComerciante = produtoComercianteRepository.findById(idProduto).orElseThrow(() -> new IllegalArgumentException("Produto with id " + idProduto + " not found"));
+    public ProdutoComerciante editarProduto(Long idEvento, Long idComerciante, Long idProduto,
+                                            ProdutoComercianteModel produtoComercianteModel) {
+        Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
+                new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
+        ProdutoComerciante produtoComerciante = produtoComercianteRepository.findById(idProduto).orElseThrow(() ->
+                new IllegalArgumentException("Produto com id " + idProduto + " não encontrado."));
 
         if(!produtoComerciante.getComerciante().getId().equals(comerciante.getId())){
-            throw new IllegalArgumentException("Product is not part of this comerciante");
+            throw new IllegalArgumentException("O produto não faz parte deste comerciante.");
         }
 
         if(!comerciante.getEvento().getId().equals(idEvento)){
-            throw new IllegalArgumentException("Comerciante is not part of this event");
+            throw new IllegalArgumentException("O Comerciante não faz parte deste evento.");
         }
 
         produtoComerciante.setDesignacao(produtoComercianteModel.getDesignacao());

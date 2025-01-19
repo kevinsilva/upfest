@@ -32,7 +32,7 @@ public class EventoServiceImpl implements EventoService {
     public Evento getEvento(Long id) {
         Optional<Evento> opt = eventoRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Evento " + id + " não existe.");
+            throw new RuntimeException("Evento " + id + " não encontrado.");
         }
         return opt.get();
     }
@@ -41,7 +41,7 @@ public class EventoServiceImpl implements EventoService {
     public Palco getPalco(Long id) {
         Optional<Palco> opt = palcoRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Palco " + id + " não existe.");
+            throw new RuntimeException("Palco " + id + " não encontrado.");
         }
         return opt.get();
     }
@@ -50,7 +50,7 @@ public class EventoServiceImpl implements EventoService {
     public Artista getArtista(Long id) {
         Optional<Artista> opt = artistaRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Artista " + id + " não existe.");
+            throw new RuntimeException("Artista " + id + " não encontrado.");
         }
         return opt.get();
     }
@@ -59,7 +59,7 @@ public class EventoServiceImpl implements EventoService {
     public Concerto getConcerto(Long id) {
         Optional<Concerto> opt = concertoRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Concerto " + id + " não existe.");
+            throw new RuntimeException("Concerto " + id + " não encontrado.");
         }
         return opt.get();
     }
@@ -68,7 +68,7 @@ public class EventoServiceImpl implements EventoService {
     public SerieBilhete getSerieBilhete(Long id) {
         Optional<SerieBilhete> opt = serieBilheteRepository.findById(id);
         if(opt.isEmpty()) {
-            throw new RuntimeException("Série de bilhetes " + id + " não existe.");
+            throw new RuntimeException("Série de bilhetes " + id + " não encontrado.");
         }
         return opt.get();
     }
