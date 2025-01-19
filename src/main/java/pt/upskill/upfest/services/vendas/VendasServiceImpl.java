@@ -37,18 +37,6 @@ public class VendasServiceImpl implements VendasService {
     @Autowired
     ContaCashlessRepository contaCashlessRepository;
 
-//    @Override
-//    public List<Participante> listarParticipantes(Long evento) {
-//        List<Bilhete> bilhetes = bilheteRepository.findByEventoId(evento);
-//        return bilhetes.stream().map(Bilhete::getParticipante).toList();
-//    }
-
-//    @Override
-//    public List<Pagamento> listarPagamentos(String participante) {
-//        List<Bilhete> bilhetes = bilheteRepository.findByParticipanteEmail(participante);
-//        return bilhetes.stream().map(Bilhete::getPagamento).toList();
-//    }
-
     @Override
     public List<Participante> listarParticipantes(Long id) {
         return participanteRepository.findAll();
@@ -111,15 +99,15 @@ public class VendasServiceImpl implements VendasService {
     }
 
 
-        //2.3.pagamentos
-        @Override
-        public Pagamento validarPagamento(PagamentoModel info) {
-            Pagamento pagamento = pagamentoRepository.findByReferenciaAndEntidade(info.getReferencia(), info.getEntidade())
-                    .orElseThrow(()->{throw new IllegalArgumentException("Pagamento não Existe");});
-            if (pagamento.getData_validado() != null) { throw new IllegalArgumentException("Pagamento já Validado");}
-            pagamento.setData_validado(LocalDateTime.now());
-            return pagamentoRepository.save(pagamento);
-        }
+    //2.3.pagamentos
+    @Override
+    public Pagamento validarPagamento(PagamentoModel info) {
+        Pagamento pagamento = pagamentoRepository.findByReferenciaAndEntidade(info.getReferencia(), info.getEntidade())
+                .orElseThrow(()->{throw new IllegalArgumentException("Pagamento não Existe");});
+        if (pagamento.getData_validado() != null) { throw new IllegalArgumentException("Pagamento já Validado");}
+        pagamento.setData_validado(LocalDateTime.now());
+        return pagamentoRepository.save(pagamento);
+    }
 
     @Override
     public Entrada validarEntrada(ValidarEntradaModel info) {

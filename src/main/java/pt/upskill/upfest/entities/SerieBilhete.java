@@ -17,7 +17,6 @@ public class SerieBilhete {
     private String designacao;
     private int numero_bilhetes;
     private double custo;
-    //@DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate limite_vendas;
 
     @ManyToOne

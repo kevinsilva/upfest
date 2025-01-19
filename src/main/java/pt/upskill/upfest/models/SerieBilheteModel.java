@@ -7,7 +7,6 @@ public class SerieBilheteModel {
     private String designacao;
     private int numero_bilhetes;
     private double custo;
-    //@DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate limite_vendas;
 
     public String getDesignacao() {
