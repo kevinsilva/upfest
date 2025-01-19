@@ -73,7 +73,6 @@ public class EventoServiceImpl implements EventoService {
         return opt.get();
     }
 
-
     //Evento
     @Override
     public List<Evento> getAllEventos() {
@@ -81,14 +80,14 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Evento criarEvento(EventoModel info) {
+    public Evento createEvento(EventoModel info) {
         Evento evento = new Evento();
         evento.setDesignacao(info.getDesignacao());
         return eventoRepository.save(evento);
     }
 
     @Override
-    public Evento editarEvento(Long id, EventoModel info) {
+    public Evento editEvento(Long id, EventoModel info) {
         Evento evento = getEvento(id);
 
         evento.setDesignacao(info.getDesignacao());
@@ -103,7 +102,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Palco criarPalco(Long id, PalcoModel info) {
+    public Palco createPalco(Long id, PalcoModel info) {
         Evento evento = getEvento(id);
 
         Palco palco = new Palco();
@@ -113,7 +112,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Palco editarPalco(Long idEvento, PalcoModel info, Long idPalco) {
+    public Palco editPalco(Long idEvento, PalcoModel info, Long idPalco) {
         Evento evento = getEvento(idEvento);
 
         Palco palco = getPalco(idPalco);
@@ -129,7 +128,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Artista criarArtista(Long id, ArtistaModel info) {
+    public Artista createArtista(Long id, ArtistaModel info) {
         Evento evento = getEvento(id);
 
         Artista artista = new Artista();
@@ -141,7 +140,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Artista editarArtista(Long idEvento, ArtistaModel info, Long idArtista) {
+    public Artista editArtista(Long idEvento, ArtistaModel info, Long idArtista) {
         Evento evento = getEvento(idEvento);
 
         Artista artista = getArtista(idArtista);
@@ -159,7 +158,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Concerto criarConcerto(Long id, ConcertoModel info) {
+    public Concerto createConcerto(Long id, ConcertoModel info) {
         Evento evento = getEvento(id);
         Artista artista = getArtista(info.getArtista());
         Palco palco = getPalco(info.getPalco());
@@ -174,7 +173,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public Concerto editarConcerto(Long idEvento, ConcertoModel info, Long idConcerto) {
+    public Concerto editConcerto(Long idEvento, ConcertoModel info, Long idConcerto) {
         Evento evento = getEvento(idEvento);
         Artista artista = getArtista(info.getArtista());
         Palco palco = getPalco(info.getPalco());
@@ -195,7 +194,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public SerieBilhete criarSerieBilhete(Long id, SerieBilheteModel info) {
+    public SerieBilhete createSerieBilhete(Long id, SerieBilheteModel info) {
         Evento evento = getEvento(id);
 
         SerieBilhete serieBilhete = new SerieBilhete();
@@ -208,7 +207,7 @@ public class EventoServiceImpl implements EventoService {
     }
 
     @Override
-    public SerieBilhete editarSerieBilhete(Long idEvento, SerieBilheteModel info, Long idSerie) {
+    public SerieBilhete editSerieBilhete(Long idEvento, SerieBilheteModel info, Long idSerie) {
         Evento evento = getEvento(idEvento);
 
         SerieBilhete serieBilhete = getSerieBilhete(idSerie);

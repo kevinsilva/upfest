@@ -11,21 +11,11 @@ import pt.upskill.upfest.models.ValidarEntradaModel;
 import java.util.List;
 
 public interface VendasService {
-
-    List<Participante> listarParticipantes(Long id);
-
-    List<Pagamento> listarPagamentos(String email);
-
-    //2.1.bilhete
-    Bilhete comprarBilhete(ComprarBilheteModel bilheteModel);
-
-    Pagamento validarPagamento(PagamentoModel info);
-
-    //2.1.bilhete
-    Participante getParticipante(Long id);
-
-    Entrada validarEntrada(ValidarEntradaModel info);
-
-    int gerarReferencia();
-    int gerarEntidade(Participante participante);
+    List<Participante> listParticipantes(Long id);
+    List<Pagamento> listPagamentos(String email);
+    Bilhete buyBilhete(ComprarBilheteModel bilheteModel);
+    Pagamento validatePagamento(PagamentoModel info);
+    Entrada validateEntrada(ValidarEntradaModel info);
+    int generateReferencia();
+    int generateEntidade(Participante participante);
 }

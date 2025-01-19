@@ -17,28 +17,27 @@ public class VendasController {
     VendasService vendasService;
 
     @PostMapping(value = "/vendas/pagamentos/validar")
-    public Pagamento validarPagamento(@RequestBody PagamentoModel pagamentoModel){
-        return vendasService.validarPagamento(pagamentoModel);
+    public Pagamento validatePagamento(@RequestBody PagamentoModel pagamentoModel){
+        return vendasService.validatePagamento(pagamentoModel);
     }
 
     @GetMapping("/vendas/pagamentos/listar")
-    public List<Pagamento> listarPagamentos(@RequestParam String participante) {
-        return vendasService.listarPagamentos(participante);
+    public List<Pagamento> listPagamentos(@RequestParam String participante) {
+        return vendasService.listPagamentos(participante);
     }
 
     @PostMapping(value = "/vendas/bilhetes/comprar")
-    public Bilhete comprarBilhete(@RequestBody ComprarBilheteModel comprarBilheteModel){
-        return vendasService.comprarBilhete(comprarBilheteModel);
+    public Bilhete buyBilhete(@RequestBody ComprarBilheteModel comprarBilheteModel){
+        return vendasService.buyBilhete(comprarBilheteModel);
     }
 
     @GetMapping("/vendas/participantes/listar")
-    public List<Participante> listarParticipantes(@RequestParam Long evento) {
-        return vendasService.listarParticipantes(evento);
+    public List<Participante> listParticipantes(@RequestParam Long evento) {
+        return vendasService.listParticipantes(evento);
     }
 
-
     @PostMapping("/vendas/bilhetes/validar_entrada")
-    public Entrada validarEntrada(@RequestBody ValidarEntradaModel validarEntradaModel){
-        return vendasService.validarEntrada(validarEntradaModel);
+    public Entrada validateEntrada(@RequestBody ValidarEntradaModel validarEntradaModel){
+        return vendasService.validateEntrada(validarEntradaModel);
     }
 }

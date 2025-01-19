@@ -4,5 +4,5 @@ import pt.upskill.upfest.entities.GastoCashless;
 import pt.upskill.upfest.models.CompraModel;
 
 public interface CompraService {
-    GastoCashless registarCompra(Long idEvento, CompraModel compraModel);
+    GastoCashless registerCompra(Long idEvento, CompraModel compraModel);
 }

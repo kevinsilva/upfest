@@ -21,7 +21,7 @@ public class ComercianteServiceImpl implements ComercianteService {
     EventoRepository eventoRepository;
 
     @Override
-    public List<Comerciante> listarComerciantes(Long idEvento) {
+    public List<Comerciante> listComerciantes(Long idEvento) {
         Evento evento = eventoRepository.findById(idEvento)
                 .orElseThrow(() -> new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
 
@@ -29,7 +29,7 @@ public class ComercianteServiceImpl implements ComercianteService {
     }
 
     @Override
-    public Comerciante criarComerciante(Long idEvento, ComercianteModel comercianteModel) {
+    public Comerciante createComerciante(Long idEvento, ComercianteModel comercianteModel) {
         Evento evento = eventoRepository.findById(idEvento)
                 .orElseThrow(() -> new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
 
@@ -41,7 +41,7 @@ public class ComercianteServiceImpl implements ComercianteService {
     }
 
     @Override
-    public Comerciante editarComerciante(Long idEvento, Long idComerciante, ComercianteModel comercianteModel) {
+    public Comerciante editComerciante(Long idEvento, Long idComerciante, ComercianteModel comercianteModel) {
         Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
                 new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
 

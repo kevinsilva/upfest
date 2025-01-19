@@ -18,7 +18,7 @@ public class ProdutoServiceImpl implements ProdutoService {
     ComercianteRepository comercianteRepository;
 
     @Override
-    public List<ProdutoComerciante> listarProdutos(Long idEvento, Long idComerciante) {
+    public List<ProdutoComerciante> listProdutos(Long idEvento, Long idComerciante) {
         Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
                 new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
 
@@ -30,8 +30,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public ProdutoComerciante criarProduto(Long idEvento, Long idComerciante,
-                                           ProdutoComercianteModel produtoComercianteModel) {
+    public ProdutoComerciante createProduto(Long idEvento, Long idComerciante,
+                                            ProdutoComercianteModel produtoComercianteModel) {
         Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
                 new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
 
@@ -44,8 +44,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public ProdutoComerciante editarProduto(Long idEvento, Long idComerciante, Long idProduto,
-                                            ProdutoComercianteModel produtoComercianteModel) {
+    public ProdutoComerciante editProduto(Long idEvento, Long idComerciante, Long idProduto,
+                                          ProdutoComercianteModel produtoComercianteModel) {
         Comerciante comerciante = comercianteRepository.findById(idComerciante).orElseThrow(() ->
                 new IllegalArgumentException("Comerciante com id " + idComerciante + " não encontrado."));
         ProdutoComerciante produtoComerciante = produtoComercianteRepository.findById(idProduto).orElseThrow(() ->

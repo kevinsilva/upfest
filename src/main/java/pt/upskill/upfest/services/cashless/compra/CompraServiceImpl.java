@@ -27,7 +27,7 @@ public class CompraServiceImpl implements CompraService {
     MovimentoCashlessRepository movimentoCashlessRepository;
 
     @Override
-    public GastoCashless registarCompra(Long idEvento, CompraModel compraModel) {
+    public GastoCashless registerCompra(Long idEvento, CompraModel compraModel) {
         Evento evento = this.findEventoById(idEvento);
         ProdutoComerciante produtoComerciante = this.findProdutoById(compraModel.getProduto(), idEvento);
         Participante participante = this.findParticipanteByEmail(compraModel.getParticipante());

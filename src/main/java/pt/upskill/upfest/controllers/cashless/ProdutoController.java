@@ -15,18 +15,18 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @GetMapping("{id_evento}/comerciantes/{id_comerciante}/produtos/listar")
-    public List<ProdutoComerciante> listarProdutos(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante) {
-        return produtoService.listarProdutos(idEvento, idComerciante);
+    public List<ProdutoComerciante> listProdutos(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante) {
+        return produtoService.listProdutos(idEvento, idComerciante);
     }
 
     @PostMapping("{id_evento}/comerciantes/{id_comerciante}/produtos/criar")
-    public ProdutoComerciante criarProduto(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante, @RequestBody ProdutoComercianteModel produtoComercianteModel) {
-        return produtoService.criarProduto(idEvento, idComerciante, produtoComercianteModel);
+    public ProdutoComerciante createProduto(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante, @RequestBody ProdutoComercianteModel produtoComercianteModel) {
+        return produtoService.createProduto(idEvento, idComerciante, produtoComercianteModel);
     }
 
     @PostMapping("{id_evento}/comerciantes/{id_comerciante}/produtos/{id_produto}/editar")
-    public ProdutoComerciante editarProduto(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante, @PathVariable("id_produto") Long idProduto, @RequestBody ProdutoComercianteModel produtoComercianteModel) {
-        return produtoService.editarProduto(idEvento, idComerciante, idProduto, produtoComercianteModel);
+    public ProdutoComerciante editProduto(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante, @PathVariable("id_produto") Long idProduto, @RequestBody ProdutoComercianteModel produtoComercianteModel) {
+        return produtoService.editProduto(idEvento, idComerciante, idProduto, produtoComercianteModel);
     }
 
 }

@@ -33,7 +33,7 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     VendasService vendasService;
 
     @Override
-    public double obterSaldo(Long idEvento, String emailParticipante) {
+    public double getSaldo(Long idEvento, String emailParticipante) {
         Evento evento = this.findEventoById(idEvento);
         Participante participante = this.findParticipanteByEmail(emailParticipante);
         ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
@@ -43,7 +43,7 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     }
 
     @Override
-    public Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante) {
+    public Iterable<MovimentoCashless> getExtrato(Long idEvento, String emailParticipante) {
         Evento evento = this.findEventoById(idEvento);
         Participante participante = this.findParticipanteByEmail(emailParticipante);
         ContaCashless contaCashless = this.findContaCashless(participante, evento);
@@ -52,7 +52,7 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     }
 
     @Override
-    public CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel) {
+    public CarregamentoCashless rechargeConta(Long idEvento, CarregamentoModel carregamentoModel) {
         String participanteEmail = carregamentoModel.getParticipante();
         double valor = carregamentoModel.getValor();
 
@@ -68,7 +68,7 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     }
 
     @Override
-    public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
+    public PagamentoCashless validatePagamento(ValidarPagamentoModel validarPagamentoModel) {
         int entidade = validarPagamentoModel.getEntidade();
         int referencia =validarPagamentoModel.getReferencia();
         double valor = validarPagamentoModel.getValor();
@@ -107,8 +107,8 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     private PagamentoCashless createPagamentoCashless(ContaCashless contaCashless, Participante participante, double valor) {
         PagamentoCashless pagamento = new PagamentoCashless();
         pagamento.setContaCashless(contaCashless);
-        pagamento.setEntidade(pagamentoRepository.count() <= 1 ? 12345 : vendasService.gerarEntidade(participante));
-        pagamento.setReferencia(pagamentoRepository.count() <= 1 ? 12345643 : vendasService.gerarReferencia());
+        pagamento.setEntidade(pagamentoRepository.count() <= 1 ? 12345 : vendasService.generateEntidade(participante));
+        pagamento.setReferencia(pagamentoRepository.count() <= 1 ? 12345643 : vendasService.generateReferencia());
         pagamento.setValor(pagamentoRepository.count() <= 1 ? 40 : valor);
         pagamento.setData_compra(LocalDateTime.now());
         pagamento.setData_validado(null);

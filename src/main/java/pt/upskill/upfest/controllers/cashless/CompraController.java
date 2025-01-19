@@ -14,7 +14,7 @@ public class CompraController {
     CompraService compraService;
 
     @PostMapping("/{id_evento}/registar_compra")
-    public GastoCashless registarCompra(@PathVariable("id_evento") Long idEvento, @RequestBody CompraModel compraModel){
-        return compraService.registarCompra(idEvento, compraModel);
+    public GastoCashless registerCompra(@PathVariable("id_evento") Long idEvento, @RequestBody CompraModel compraModel){
+        return compraService.registerCompra(idEvento, compraModel);
     }
 }

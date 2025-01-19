@@ -7,9 +7,8 @@ import pt.upskill.upfest.models.CarregamentoModel;
 import pt.upskill.upfest.models.ValidarPagamentoModel;
 
 public interface CarregamentosService {
-    double obterSaldo(Long idEvento, String emailParticipante);
-    Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante);
-    CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel);
-    PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel);
-
+    double getSaldo(Long idEvento, String emailParticipante);
+    Iterable<MovimentoCashless> getExtrato(Long idEvento, String emailParticipante);
+    CarregamentoCashless rechargeConta(Long idEvento, CarregamentoModel carregamentoModel);
+    PagamentoCashless validatePagamento(ValidarPagamentoModel validarPagamentoModel);
 }

@@ -16,17 +16,17 @@ public class ComercianteController {
     ComercianteService comercianteService;
 
     @GetMapping("/{id_evento}/comerciantes/listar")
-    public List<Comerciante> listarComerciantes(@PathVariable("id_evento") Long idEvento) {
-        return comercianteService.listarComerciantes(idEvento);
+    public List<Comerciante> listComerciantes(@PathVariable("id_evento") Long idEvento) {
+        return comercianteService.listComerciantes(idEvento);
     }
 
     @PostMapping("/{id_evento}/comerciantes/criar")
-    public Comerciante criarComerciante(@PathVariable("id_evento") Long idEvento, @RequestBody ComercianteModel comercianteModel) {
-        return comercianteService.criarComerciante(idEvento, comercianteModel);
+    public Comerciante createComerciante(@PathVariable("id_evento") Long idEvento, @RequestBody ComercianteModel comercianteModel) {
+        return comercianteService.createComerciante(idEvento, comercianteModel);
     }
 
     @PostMapping("/{id_evento}/comerciantes/{id_comerciante}/editar")
-    public Comerciante editarComerciante(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante, @RequestBody ComercianteModel comercianteModel) {
-        return comercianteService.editarComerciante(idEvento, idComerciante, comercianteModel);
+    public Comerciante editComerciante(@PathVariable("id_evento") Long idEvento, @PathVariable("id_comerciante") Long idComerciante, @RequestBody ComercianteModel comercianteModel) {
+        return comercianteService.editComerciante(idEvento, idComerciante, comercianteModel);
     }
 }
