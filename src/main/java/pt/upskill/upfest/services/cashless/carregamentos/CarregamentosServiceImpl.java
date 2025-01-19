@@ -32,33 +32,51 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     @Autowired
     VendasService vendasService;
 
+//    @Override
+//    public double obterSaldo(Long idEvento, String emailParticipante) {
+//        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento " +
+//                "com id " + idEvento + " não encontrado"));
+//        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() ->
+//                new IllegalArgumentException("Participante não encontrado."));
+//        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
+//        if(contaCashless == null || contaCashless.getId() == null) {
+//            return 0;
+//        }
+//        return contaCashless.getValorAtual();
+//    }
+
     @Override
     public double obterSaldo(Long idEvento, String emailParticipante) {
-        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento " +
-                "com id " + idEvento + " não encontrado"));
-        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() ->
-                new IllegalArgumentException("Participante não encontrado."));
+        Evento evento = findEventoById(idEvento);
+        Participante participante = findParticipanteByEmail(emailParticipante);
         ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-        if(contaCashless == null || contaCashless.getId() == null) {
-            return 0;
-        }
+
+        if(contaCashless == null || contaCashless.getId() == null) return 0;
         return contaCashless.getValorAtual();
     }
 
     @Override
     public Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante) {
-        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() ->
-                new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
-        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() ->
-                new IllegalArgumentException("Participante não encontrado."));
-
-        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-        if (contaCashless == null) {
-            throw new IllegalArgumentException("Nenhuma ContaCashless encontrada para o evento e participante fornecidos.");
-        }
-
+        Evento evento = findEventoById(idEvento);
+        Participante participante = findParticipanteByEmail(emailParticipante);
+        ContaCashless contaCashless = findContaCashless(participante, evento);
         return movimentoCashlessRepository.findByContaCashless(contaCashless);
     }
+
+//    @Override
+//    public Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante) {
+//        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() ->
+//                new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
+//        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() ->
+//                new IllegalArgumentException("Participante não encontrado."));
+//
+//        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
+//        if (contaCashless == null) {
+//            throw new IllegalArgumentException("Nenhuma ContaCashless encontrada para o evento e participante fornecidos.");
+//        }
+//
+//        return movimentoCashlessRepository.findByContaCashless(contaCashless);
+//    }
 
     @Override
     public CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel) {
@@ -99,10 +117,25 @@ public class CarregamentosServiceImpl implements CarregamentosService {
         return movimentoCashlessRepository.save(carregamentoCashless);
     }
 
+//    @Override
+//    public CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel) {
+//        if (carregamentoModel.getValor() <= 0) {
+//            throw new IllegalArgumentException("O valor deve ser maior que 0.");
+//        }
+//
+//        Evento evento = findEventoById(idEvento);
+//        Participante participante = findParticipanteByEmail(carregamentoModel.getParticipante());
+//        ContaCashless contaCashless = findContaCashless(participante, evento);
+//
+//        PagamentoCashless pagamentoCashless = createPagamentoCashless(contaCashless, carregamentoModel.getValor());
+//        return createCarregamentoCashless(contaCashless, pagamentoCashless, carregamentoModel.getValor());
+//    }
+
     public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
-        int entidade = pagamentoRepository.count() <= 2 ? 12345 : validarPagamentoModel.getEntidade();
-        int referencia = pagamentoRepository.count() <= 2 ? 12345643 : validarPagamentoModel.getReferencia();
-        double valor = pagamentoRepository.count() <= 2 ? 40 : validarPagamentoModel.getValor();
+        System.out.println(pagamentoRepository.count());
+        int entidade = pagamentoRepository.count() <= 3 ? 12345 : validarPagamentoModel.getEntidade();
+        int referencia = pagamentoRepository.count() <= 3 ? 12345643 : validarPagamentoModel.getReferencia();
+        double valor = pagamentoRepository.count() <= 3 ? 40 : validarPagamentoModel.getValor();
 
         PagamentoCashless pagamentoCashless = pagamentoRepository
                 .findByReferenciaAndEntidadeCashless(referencia, entidade)
@@ -132,5 +165,21 @@ public class CarregamentosServiceImpl implements CarregamentosService {
         return pagamentoCashless;
     }
 
+    private Evento findEventoById(Long idEvento) {
+        return eventoRepository.findById(idEvento)
+                .orElseThrow(() -> new IllegalArgumentException("Evento com id " + idEvento + " não encontrado"));
+    }
+
+    private Participante findParticipanteByEmail(String email) {
+        return participanteRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Participante não encontrado."));
+    }
+
+    private ContaCashless findContaCashless(Participante participante, Evento evento) {
+        ContaCashless conta = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
+
+        if (conta == null || conta.getId() == null) throw new IllegalArgumentException("Nenhuma conta encontrada para o evento fornecido.");
+        return conta;
+    }
 
 }
