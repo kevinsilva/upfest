@@ -7,6 +7,7 @@ public class Bilhete {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(unique = true)
     private String codigo;
 
     @ManyToOne

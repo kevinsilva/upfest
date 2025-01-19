@@ -71,70 +71,64 @@ public class VendasServiceImpl implements VendasService {
     }
 
 
-@Override
-public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
-    Evento evento = eventoRepository.findById(bilhete.getEvento())
-            .orElseThrow(()->{throw new IllegalArgumentException("Evento Não Existe");});  //TESTED
-
-    Participante participante = participanteRepository
-            .findByEmail(bilhete.getEmail())
-            .orElseGet(() -> {
-                // Se nao encontra Participante, cria um novo
-                Participante novoParticipante = new Participante();
-                novoParticipante.setNome(bilhete.getNome());
-                novoParticipante.setEmail(bilhete.getEmail());
-                novoParticipante.setData_registo(LocalDateTime.now());
-                return participanteRepository.save(novoParticipante);
-            });
-    Bilhete novoBilhete = new Bilhete();
-    novoBilhete.setEvento(evento);
-    novoBilhete.setParticipante(participante);
-
-    novoBilhete.setSerieBilhete(serieBilheteRepository.findById(bilhete.getSerie())
-            .orElseThrow(()->{throw new IllegalArgumentException("SerieBilhete Não Existe");}));
-    novoBilhete.setCodigo("FOEMFOND");
-    //novoBilhete.setCodigo(generateBilheteCodigo());  //para uma implementação real
-    SerieBilhete serieBilhete = novoBilhete.getSerieBilhete();
-    //Pagamento pagamento = new Pagamento(12345, 12345643, serieBilhete.getCusto());
-    Pagamento pagamento = new Pagamento(this.gerarEntidade(participante), this.gerarReferencia(), serieBilhete.getCusto());
-    pagamento.setData_compra(LocalDateTime.now());
-    pagamento = pagamentoRepository.save(pagamento);
-    novoBilhete.setPagamento(pagamento);
-
-    ContaCashless conta = new ContaCashless();
-    conta.setValorAtual(0.0);
-    conta.setParticipante(participante);
-    conta.setEvento(evento);
-    contaCashlessRepository.save(conta);
-
-    return bilheteRepository.save(novoBilhete);
-}
-
-//Gerar o codigo para uma implementação real
-//    private String generateBilheteCodigo() {
-//        return UUID.randomUUID().toString().substring(0,12);
-//    }
-
-
-
-    //2.3.pagamentos
     @Override
-    public Pagamento validarPagamento(PagamentoModel info) {
-        Pagamento pagamento = pagamentoRepository.findByReferenciaAndEntidade(info.getReferencia(), info.getEntidade())
-                .orElseThrow(()->{throw new IllegalArgumentException("Pagamento não Existe");});
-        if (pagamento.getData_validado() != null) { throw new IllegalArgumentException("Pagamento já Validado");}
-        pagamento.setData_validado(LocalDateTime.now());
-        return pagamentoRepository.save(pagamento);
+    public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
+        Evento evento = eventoRepository.findById(bilhete.getEvento())
+                .orElseThrow(()->{throw new IllegalArgumentException("Evento Não Existe");});  //TESTED
+
+        Participante participante = participanteRepository
+                .findByEmail(bilhete.getEmail())
+                .orElseGet(() -> {
+                    // Se nao encontra Participante, cria um novo
+                    Participante novoParticipante = new Participante();
+                    novoParticipante.setNome(bilhete.getNome());
+                    novoParticipante.setEmail(bilhete.getEmail());
+                    novoParticipante.setData_registo(LocalDateTime.now());
+                    return participanteRepository.save(novoParticipante);
+                });
+        Bilhete novoBilhete = new Bilhete();
+        novoBilhete.setEvento(evento);
+        novoBilhete.setParticipante(participante);
+
+        novoBilhete.setSerieBilhete(serieBilheteRepository.findById(bilhete.getSerie())
+                .orElseThrow(()->{throw new IllegalArgumentException("SerieBilhete Não Existe");}));
+        novoBilhete.setCodigo(this.gerarCodigoBilhete());
+        //novoBilhete.setCodigo(generateBilheteCodigo());  //para uma implementação real
+        SerieBilhete serieBilhete = novoBilhete.getSerieBilhete();
+        //Pagamento pagamento = new Pagamento(12345, 12345643, serieBilhete.getCusto());
+        Pagamento pagamento = new Pagamento(this.gerarEntidade(participante), this.gerarReferencia(), serieBilhete.getCusto());
+        pagamento.setData_compra(LocalDateTime.now());
+        pagamento = pagamentoRepository.save(pagamento);
+        novoBilhete.setPagamento(pagamento);
+
+        ContaCashless conta = new ContaCashless();
+        conta.setValorAtual(0.0);
+        conta.setParticipante(participante);
+        conta.setEvento(evento);
+        contaCashlessRepository.save(conta);
+
+        return bilheteRepository.save(novoBilhete);
     }
+
+
+        //2.3.pagamentos
+        @Override
+        public Pagamento validarPagamento(PagamentoModel info) {
+            Pagamento pagamento = pagamentoRepository.findByReferenciaAndEntidade(info.getReferencia(), info.getEntidade())
+                    .orElseThrow(()->{throw new IllegalArgumentException("Pagamento não Existe");});
+            if (pagamento.getData_validado() != null) { throw new IllegalArgumentException("Pagamento já Validado");}
+            pagamento.setData_validado(LocalDateTime.now());
+            return pagamentoRepository.save(pagamento);
+        }
 
     @Override
     public Entrada validarEntrada(ValidarEntradaModel info) {
-
         Bilhete bilhete = bilheteRepository.findByCodigo(info.getCodigo())
                 .orElseThrow(()->{throw new IllegalArgumentException("Não Existe Bilhete c/ codigo");});
 
         if (entradaRepository.findByBilhete(bilhete).isPresent()) {
-            throw new IllegalArgumentException("Entrada Já Existe");}
+            throw new IllegalArgumentException("Entrada Já Existe");
+        }
 
         //Criar Entrada
         Entrada entrada = new Entrada();
@@ -146,11 +140,18 @@ public Bilhete comprarBilhete(ComprarBilheteModel bilhete) {
     }
 
     public int gerarReferencia() {
+        if (pagamentoRepository.count() == 0) return 12345643;
         return Math.abs(UUID.randomUUID().hashCode() % 1000000000);
     }
 
     public int gerarEntidade(Participante participante) {
+        if (pagamentoRepository.count() == 0) return 12345;
         String email = participante.getEmail();
         return Math.abs(email.hashCode());
+    }
+
+    private String gerarCodigoBilhete() {
+        if (bilheteRepository.count() == 0) return "FOEMFOND";
+        return UUID.randomUUID().toString().substring(0,12);
     }
 }

@@ -1,11 +1,11 @@
 package pt.upskill.upfest.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"participante_id", "evento_id"})
+})
 public class ContaCashless {
     @Id
     @GeneratedValue

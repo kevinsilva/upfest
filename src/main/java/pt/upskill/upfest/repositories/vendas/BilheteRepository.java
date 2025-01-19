@@ -9,12 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface BilheteRepository extends JpaRepository <Bilhete, Long> {
-
     Optional<Bilhete> findById (Long Id);
-
     Optional<Bilhete> findByCodigo (String codigo);
-
-    List<Bilhete> findByEventoId(Long eventoId);
-
-    List<Bilhete> findByParticipanteEmail(String email);
 }

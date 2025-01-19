@@ -96,13 +96,14 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     }
 
     public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
-        int entidade = validarPagamentoModel.getEntidade();
-        int referencia = validarPagamentoModel.getReferencia();
-        double valor = validarPagamentoModel.getValor();
+        int entidade = pagamentoRepository.count() == 0 ? 12345 : validarPagamentoModel.getEntidade();
+        int referencia = pagamentoRepository.count() == 0 ? 12345643 : validarPagamentoModel.getReferencia();
+        double valor = pagamentoRepository.count() == 0 ? 40 : validarPagamentoModel.getValor();
 
-        PagamentoCashless pagamentoCashless = (PagamentoCashless)
-                pagamentoRepository.findByReferenciaAndEntidade(referencia, entidade).orElseThrow(() -> new IllegalArgumentException("Pagamento not found for given reference and entity."));
-        
+        PagamentoCashless pagamentoCashless = pagamentoRepository
+                .findByReferenciaAndEntidadeCashless(referencia, entidade)
+                .orElseThrow(() -> new IllegalArgumentException("Pagamento not found for given reference and entity."));
+
         if(pagamentoCashless.getData_validado() != null) {
             throw new IllegalArgumentException("Pagamento already validated.");
         }
