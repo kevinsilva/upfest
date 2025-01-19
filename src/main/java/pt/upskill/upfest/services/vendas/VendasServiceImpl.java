@@ -118,6 +118,10 @@ public class VendasServiceImpl implements VendasService {
             throw new IllegalArgumentException("Entrada já existente.");
         }
 
+        if(bilhete.getPagamento().getData_validado() == null) {
+            throw new RuntimeException("O pagamento não foi validado.");
+        }
+
         //Criar Entrada
         Entrada entrada = new Entrada();
         entrada.setBilhete(bilhete);

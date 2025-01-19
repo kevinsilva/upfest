@@ -100,9 +100,9 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     }
 
     public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
-        int entidade = pagamentoRepository.count() == 0 ? 12345 : validarPagamentoModel.getEntidade();
-        int referencia = pagamentoRepository.count() == 0 ? 12345643 : validarPagamentoModel.getReferencia();
-        double valor = pagamentoRepository.count() == 0 ? 40 : validarPagamentoModel.getValor();
+        int entidade = pagamentoRepository.count() <= 2 ? 12345 : validarPagamentoModel.getEntidade();
+        int referencia = pagamentoRepository.count() <= 2 ? 12345643 : validarPagamentoModel.getReferencia();
+        double valor = pagamentoRepository.count() <= 2 ? 40 : validarPagamentoModel.getValor();
 
         PagamentoCashless pagamentoCashless = pagamentoRepository
                 .findByReferenciaAndEntidadeCashless(referencia, entidade)
