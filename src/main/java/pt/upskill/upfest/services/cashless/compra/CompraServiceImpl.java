@@ -28,43 +28,73 @@ public class CompraServiceImpl implements CompraService {
 
     @Override
     public GastoCashless registarCompra(Long idEvento, CompraModel compraModel) {
-        Evento evento = eventoRepository
-                .findById(idEvento).orElseThrow(() ->
-                        new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
+        Evento evento = this.findEventoById(idEvento);
+        ProdutoComerciante produtoComerciante = this.findProdutoById(compraModel.getProduto(), idEvento);
+        Participante participante = this.findParticipanteByEmail(compraModel.getParticipante());
+        ContaCashless contaCashless = this.findContaCashless(participante, evento);
 
+        double total = this.calculateTotal(produtoComerciante.getValor(), compraModel.getQuantidade());
+        validateSaldo(contaCashless, total);
 
-        ProdutoComerciante produtoComerciante =
-                produtoComercianteRepository.findById(compraModel.getProduto()).orElseThrow(()->
-                        new IllegalArgumentException("Produto não encontrado."));
+        GastoCashless gastoCashless = createGastoCashless(contaCashless, produtoComerciante, compraModel, total);
 
-        if(!produtoComerciante.getComerciante().getEvento().getId().equals(idEvento)) throw new
-                IllegalArgumentException("O produto não pertence a este evento.");
+        contaCashless.setValorAtual(contaCashless.getValorAtual() - total);
+        contaCashlessRepository.save(contaCashless);
 
-        Participante participante = participanteRepository.findByEmail(compraModel.getParticipante()).orElseThrow(() ->
-                new IllegalArgumentException("Participante não encontrado."));
-        ContaCashless contaCashless =
-                contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-        if (contaCashless == null || contaCashless.getId() == null)  throw new
-                IllegalArgumentException("Nenhuma conta cashless " +
-                " encontrada para o participante fornecido neste evento..");
+        return movimentoCashlessRepository.save(gastoCashless);
+    }
 
-        double total = produtoComerciante.getValor() * compraModel.getQuantidade();
-        if(contaCashless.getValorAtual() < total) throw new IllegalArgumentException("Os fundos não cobrem " +
-                "o custo total.");
+    private Evento findEventoById(Long idEvento) {
+        return eventoRepository.findById(idEvento)
+                .orElseThrow(() -> new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
+    }
 
+    private ProdutoComerciante findProdutoById(Long idProduto, Long idEvento) {
+        ProdutoComerciante produto = produtoComercianteRepository.findById(idProduto)
+                .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado."));
+
+        if (!produto.getComerciante().getEvento().getId().equals(idEvento)) {
+            throw new IllegalArgumentException("O produto não pertence a este evento.");
+        }
+
+        return produto;
+    }
+
+    private Participante findParticipanteByEmail(String email) {
+        return participanteRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Participante não encontrado."));
+    }
+
+    private ContaCashless findContaCashless(Participante participante, Evento evento) {
+        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
+
+        if (contaCashless == null || contaCashless.getId() == null) {
+            throw new IllegalArgumentException("Nenhuma conta cashless encontrada para o participante neste evento.");
+        }
+
+        return contaCashless;
+    }
+
+    private double calculateTotal(double unitPrice, int quantity) {
+        return unitPrice * quantity;
+    }
+
+    private void validateSaldo(ContaCashless contaCashless, double total) {
+        if (contaCashless.getValorAtual() < total) {
+            throw new IllegalArgumentException("Os fundos não cobrem o custo total.");
+        }
+    }
+
+    private GastoCashless createGastoCashless(ContaCashless contaCashless, ProdutoComerciante produto, CompraModel model, double total) {
         GastoCashless gastoCashless = new GastoCashless();
         gastoCashless.setTipoMovimento(TipoMovimento.GASTO);
         gastoCashless.setContaCashless(contaCashless);
         gastoCashless.setValor(total);
         gastoCashless.setSaldo(contaCashless.getValorAtual() - total);
         gastoCashless.setData(LocalDateTime.now());
-        gastoCashless.setProdutoComerciante(produtoComerciante);
-        gastoCashless.setQuantidade(compraModel.getQuantidade());
-        gastoCashless.setValor_unitario(produtoComerciante.getValor());
-        gastoCashless = movimentoCashlessRepository.save(gastoCashless);
-
-        contaCashless.setValorAtual(contaCashless.getValorAtual() - total);
-        contaCashlessRepository.save(contaCashless);
+        gastoCashless.setProdutoComerciante(produto);
+        gastoCashless.setQuantidade(model.getQuantidade());
+        gastoCashless.setValor_unitario(produto.getValor());
 
         return gastoCashless;
     }

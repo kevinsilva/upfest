@@ -32,23 +32,10 @@ public class CarregamentosServiceImpl implements CarregamentosService {
     @Autowired
     VendasService vendasService;
 
-//    @Override
-//    public double obterSaldo(Long idEvento, String emailParticipante) {
-//        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() -> new IllegalArgumentException("Evento " +
-//                "com id " + idEvento + " não encontrado"));
-//        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() ->
-//                new IllegalArgumentException("Participante não encontrado."));
-//        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-//        if(contaCashless == null || contaCashless.getId() == null) {
-//            return 0;
-//        }
-//        return contaCashless.getValorAtual();
-//    }
-
     @Override
     public double obterSaldo(Long idEvento, String emailParticipante) {
-        Evento evento = findEventoById(idEvento);
-        Participante participante = findParticipanteByEmail(emailParticipante);
+        Evento evento = this.findEventoById(idEvento);
+        Participante participante = this.findParticipanteByEmail(emailParticipante);
         ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
 
         if(contaCashless == null || contaCashless.getId() == null) return 0;
@@ -57,26 +44,12 @@ public class CarregamentosServiceImpl implements CarregamentosService {
 
     @Override
     public Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante) {
-        Evento evento = findEventoById(idEvento);
-        Participante participante = findParticipanteByEmail(emailParticipante);
-        ContaCashless contaCashless = findContaCashless(participante, evento);
+        Evento evento = this.findEventoById(idEvento);
+        Participante participante = this.findParticipanteByEmail(emailParticipante);
+        ContaCashless contaCashless = this.findContaCashless(participante, evento);
+
         return movimentoCashlessRepository.findByContaCashless(contaCashless);
     }
-
-//    @Override
-//    public Iterable<MovimentoCashless> obterExtrato(Long idEvento, String emailParticipante) {
-//        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() ->
-//                new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
-//        Participante participante = participanteRepository.findByEmail(emailParticipante).orElseThrow(() ->
-//                new IllegalArgumentException("Participante não encontrado."));
-//
-//        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-//        if (contaCashless == null) {
-//            throw new IllegalArgumentException("Nenhuma ContaCashless encontrada para o evento e participante fornecidos.");
-//        }
-//
-//        return movimentoCashlessRepository.findByContaCashless(contaCashless);
-//    }
 
     @Override
     public CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel) {
@@ -85,83 +58,33 @@ public class CarregamentosServiceImpl implements CarregamentosService {
 
         if(valor <= 0) throw new IllegalArgumentException("O valor deve ser maior que 0.");
 
-        Evento evento = eventoRepository.findById(idEvento).orElseThrow(() ->
-                new IllegalArgumentException("Evento com id " + idEvento + " não encontrado."));
-        Participante participante =
-                participanteRepository.findByEmail(participanteEmail).orElseThrow(() -> new IllegalArgumentException(
-                        "Participante não encontrado."));
+        Evento evento = this.findEventoById(idEvento);
+        Participante participante = this.findParticipanteByEmail(participanteEmail);
+        ContaCashless contaCashless = this.findContaCashless(participante, evento);
+        PagamentoCashless pagamentoCashless = this.createPagamentoCashless(contaCashless,
+                participante, valor);
 
-        ContaCashless contaCashless = contaCashlessRepository.findByParticipanteAndEvento(participante, evento);
-        if(contaCashless == null || contaCashless.getId() == null) {
-            throw new IllegalArgumentException("Não existe conta para o evento fornecido.");
-        }
-
-        PagamentoCashless pagamentoCashless = new PagamentoCashless();
-        pagamentoCashless.setContaCashless(contaCashless);
-        pagamentoCashless.setEntidade(pagamentoRepository.count() <= 1 ? 12345 : vendasService.gerarEntidade(participante));
-        pagamentoCashless.setReferencia(pagamentoRepository.count() <= 1 ? 12345643 : vendasService.gerarReferencia());
-        pagamentoCashless.setValor(pagamentoRepository.count() <= 1 ? 40 : valor);
-        pagamentoCashless.setData_compra(LocalDateTime.now());
-        pagamentoCashless.setData_validado(null);
-
-        pagamentoCashless = (PagamentoCashless) pagamentoRepository.save(pagamentoCashless);
-
-        CarregamentoCashless carregamentoCashless = new CarregamentoCashless();
-        carregamentoCashless.setTipoMovimento(TipoMovimento.RECARGA);
-        carregamentoCashless.setContaCashless(contaCashless);
-        carregamentoCashless.setValor(valor);
-        carregamentoCashless.setSaldo(contaCashless.getValorAtual() + valor);
-        carregamentoCashless.setData(LocalDateTime.now());
-        carregamentoCashless.setPagamentoCashless(pagamentoCashless);
-
-        return movimentoCashlessRepository.save(carregamentoCashless);
+        return createCarregamentoCashless(contaCashless, pagamentoCashless, valor);
     }
 
-//    @Override
-//    public CarregamentoCashless carregarConta(Long idEvento, CarregamentoModel carregamentoModel) {
-//        if (carregamentoModel.getValor() <= 0) {
-//            throw new IllegalArgumentException("O valor deve ser maior que 0.");
-//        }
-//
-//        Evento evento = findEventoById(idEvento);
-//        Participante participante = findParticipanteByEmail(carregamentoModel.getParticipante());
-//        ContaCashless contaCashless = findContaCashless(participante, evento);
-//
-//        PagamentoCashless pagamentoCashless = createPagamentoCashless(contaCashless, carregamentoModel.getValor());
-//        return createCarregamentoCashless(contaCashless, pagamentoCashless, carregamentoModel.getValor());
-//    }
-
+    @Override
     public PagamentoCashless validarPagamento(ValidarPagamentoModel validarPagamentoModel) {
         int entidade = validarPagamentoModel.getEntidade();
-        int referencia = validarPagamentoModel.getReferencia();
+        int referencia =validarPagamentoModel.getReferencia();
         double valor = validarPagamentoModel.getValor();
 
-        PagamentoCashless pagamentoCashless = pagamentoRepository
-                .findByReferenciaAndEntidadeCashless(referencia, entidade)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Pagamento não encontrado para a referência e entidade fornecidas."));
+        PagamentoCashless pagamento = pagamentoRepository.findByReferenciaAndEntidadeCashless(referencia, entidade)
+                .orElseThrow(() -> new IllegalArgumentException("Pagamento não encontrado para a referência e entidade fornecidas."));
 
-        if(pagamentoCashless.getData_validado() != null) {
-            throw new IllegalArgumentException("Pagamento já validado.");
-        }
+        this.validatePagamento(pagamento, valor);
 
-        if(pagamentoCashless.getValor() != valor) {
-            throw new IllegalArgumentException("O valor do pagamento não corresponde.");
-        }
-
-        if (new Random().nextDouble() > 0.8) {
-            throw new IllegalArgumentException("O pagamento falhou.");
-        }
-
-        ContaCashless contaCashless = pagamentoCashless.getContaCashless();
-        double novoValorAtual = contaCashless.getValorAtual() + pagamentoCashless.getValor();
-        contaCashless.setValorAtual(novoValorAtual);
+        ContaCashless contaCashless = pagamento.getContaCashless();
+        contaCashless.setValorAtual(contaCashless.getValorAtual() + pagamento.getValor());
         contaCashlessRepository.save(contaCashless);
 
-        pagamentoCashless.setData_validado(LocalDateTime.now());
-        pagamentoCashless = pagamentoRepository.save(pagamentoCashless);
+        pagamento.setData_validado(LocalDateTime.now());
 
-        return pagamentoCashless;
+        return pagamentoRepository.save(pagamento);
     }
 
     private Evento findEventoById(Long idEvento) {
@@ -179,6 +102,42 @@ public class CarregamentosServiceImpl implements CarregamentosService {
 
         if (conta == null || conta.getId() == null) throw new IllegalArgumentException("Nenhuma conta encontrada para o evento fornecido.");
         return conta;
+    }
+
+    private PagamentoCashless createPagamentoCashless(ContaCashless contaCashless, Participante participante, double valor) {
+        PagamentoCashless pagamento = new PagamentoCashless();
+        pagamento.setContaCashless(contaCashless);
+        pagamento.setEntidade(pagamentoRepository.count() <= 1 ? 12345 : vendasService.gerarEntidade(participante));
+        pagamento.setReferencia(pagamentoRepository.count() <= 1 ? 12345643 : vendasService.gerarReferencia());
+        pagamento.setValor(pagamentoRepository.count() <= 1 ? 40 : valor);
+        pagamento.setData_compra(LocalDateTime.now());
+        pagamento.setData_validado(null);
+
+        return pagamentoRepository.save(pagamento);
+    }
+
+    private CarregamentoCashless createCarregamentoCashless(ContaCashless contaCashless, PagamentoCashless pagamento, double valor) {
+        CarregamentoCashless carregamento = new CarregamentoCashless();
+        carregamento.setTipoMovimento(TipoMovimento.RECARGA);
+        carregamento.setContaCashless(contaCashless);
+        carregamento.setValor(valor);
+        carregamento.setSaldo(contaCashless.getValorAtual() + valor);
+        carregamento.setData(LocalDateTime.now());
+        carregamento.setPagamentoCashless(pagamento);
+
+        return movimentoCashlessRepository.save(carregamento);
+    }
+
+    private void validatePagamento(PagamentoCashless pagamento, double valor) {
+        if (pagamento.getData_validado() != null) {
+            throw new IllegalArgumentException("Pagamento já validado.");
+        }
+        if (pagamento.getValor() != valor) {
+            throw new IllegalArgumentException("O valor do pagamento não corresponde.");
+        }
+        if (new Random().nextDouble() > 0.8) {
+            throw new IllegalArgumentException("O pagamento falhou.");
+        }
     }
 
 }
